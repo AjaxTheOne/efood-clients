@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.API_URL,
+    baseURL: import.meta.env.PROD 
+        ? "https://api.efood.pagonoudis.gr" 
+        : "http://efood-api.test",
 });
 
 axiosInstance.interceptors.request.use((config) => {
