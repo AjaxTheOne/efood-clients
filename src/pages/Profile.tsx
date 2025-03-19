@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import ProfileAddresses from '../component/profile/ProfileAddresses';
-import ProfileInformation from '../component/profile/ProfileInformation';
+import ProfileAddresses from '../components/profile/ProfileAddresses';
+import ProfileInformation from '../components/profile/ProfileInformation';
 import { useAuth } from '../context/AuthContext';
 import axiosInstance from '../api/axiosInstance';
 import { Address, AddressResponse } from '../types/addresses';

@@ -6,12 +6,14 @@ import { useNavigate } from "react-router";
 const AuthContext = createContext<{
     user: User | null, 
     token: string | null,
+    loading: boolean,
     login: (credentials: LoginCredentials) => void,
     register: (credentials: RegisterCredentials) => void,
     logout: () => void
 }>({
     user: null, 
     token: null, 
+    loading: false,
     login: () => null,
     logout: () => null,
     register: () => null
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             : null
     );
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = ({email, password}: LoginCredentials) => {
+        setLoading(true);
         axiosInstance.post<LoginResponse>(
                 "/client/auth/login", 
                 {email, password}
@@ -49,10 +53,14 @@ export const AuthProvider = ({ children }) => {
 
                 const data = response.data.data;
                 afterAuthentication(data);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     const register = ({name, email, password}: RegisterCredentials) => {
+        setLoading(true);
         axiosInstance.post<RegisterResponse>(
                 "/client/auth/register", 
                 {name, email, password}
@@ -64,6 +72,9 @@ export const AuthProvider = ({ children }) => {
 
                 const data = response.data.data;
                 afterAuthentication(data);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -85,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -4,7 +4,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { BuildingOffice2Icon, PlusIcon } from '@heroicons/react/24/outline';
 import GoogleMap, { LatLngBounds } from "google-maps-react-markers";
 import MapMarker from "./MapMarker";
-import ProfileAddressForm from "./ProfileAddressForm";
+import AddressForm from "./AddressForm";
 
 type Props = {
     addresses: Address[];
@@ -90,7 +90,7 @@ function ProfileAddresses({ addresses }: Props) {
                                         </GoogleMap>
                                     </div>
                                     <div className="mt-2">
-                                        <ProfileAddressForm onSubmit={onSubmit}/>
+                                        <AddressForm onSubmit={onSubmit} loading={false}/>
                                     </div>
                                 </div>
                             </div>
