@@ -103,18 +103,20 @@ function Addresses() {
                             className="relative min-w-[90%] transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 lg:max-w-[90%] data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                         >
                             <div className="grid grid-cols-3 items-center">
-                                <button 
-                                    className="btn btn-circle"
-                                    onClick={() => setOpenAddresses(false)}
-                                >
-                                    <XMarkIcon className="size-6"/>
-                                </button>
+                                <div></div>
 
                                 <DialogTitle as="h3" className="text-base text-center font-semibold text-gray-900">
                                     Addresses
                                 </DialogTitle>
 
-                                <div></div>
+                                <div className="text-end">
+                                    <button 
+                                        className="btn btn-circle size-8"
+                                        onClick={() => setOpenAddresses(false)}
+                                    >
+                                        <XMarkIcon className="size-4"/>
+                                    </button>
+                                </div>
                             </div>
                             <div>
                                 {

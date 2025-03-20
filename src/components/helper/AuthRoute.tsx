@@ -1,8 +1,8 @@
 import { Navigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 
-function ProtectedRoute({ children }) {
-    const { token, user } = useAuth();
+function AuthRoute({ children }) {
+    const { user } = useAuth();
 
     if (!user) {
         return <Navigate to={"/login"} />;
@@ -10,4 +10,4 @@ function ProtectedRoute({ children }) {
     return children;
 }
 
-export default ProtectedRoute;
+export default AuthRoute;

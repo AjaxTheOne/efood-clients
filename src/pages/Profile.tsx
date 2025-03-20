@@ -21,7 +21,7 @@ function Profile() {
     }, []);
 
     return (
-        <div className="space-y-12 grid grid-cols-2 gap-x-8">
+        <div className="space-y-12 grid grid-cols-2 gap-x-8 p-6">
             <ProfileInformation user={user!} />
             <ProfileAddresses addresses={addresses}/>
         </div>
