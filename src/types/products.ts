@@ -9,5 +9,5 @@ export type Product = {
     description: string;
     mainImage: string;
     name: string;
-    price: string;
+    price: number;
 };

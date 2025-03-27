@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Store } from "../../types/stores";
+import { useCartStore } from "../../context/CartStore";
 
 type Props = {
     layout: "list" | "grid";
@@ -7,8 +8,23 @@ type Props = {
 };
 
 function StoresList({ layout, stores }: Props) {
+    const cartStores = useCartStore(state => state.stores);
 
-    const cardStore = (store: Store) => (
+    const activeCart = (store: Store, size: string = "badge-sm") =>
+        cartStores?.[store.id]?.products?.length ? (
+            <div className="mb-3">
+                <div className={"badge badge-error text-white " + size}>
+                    {cartStores?.[store.id]?.products.reduce((total, product) => {
+                        return total + product.quantity;
+                    }, 0)} products in cart
+                </div>
+            </div>
+        ) : (
+            null
+        )
+    
+
+    const gridStore = (store: Store) => (
         <Link to={"/stores/" + store.id} key={store.id}>
             <div className="card bg-base-100 w-full shadow-sm">
                 <figure className="relative">
@@ -30,10 +46,13 @@ function StoresList({ layout, stores }: Props) {
                     {
                         store.shipping_price &&
                         <div
-                            className="absolute px-1.5 bg-white rounded-t-lg"
+                            className="absolute"
                             style={{ right: "10px", bottom: "0" }}
                         >
-                            <span className="text-xs">Delivery {store.shipping_price}€</span>
+                            {activeCart(store)}
+                            <div className="px-1.5 bg-white rounded-t-lg text-center">
+                                <span className="text-xs">Delivery {store.shipping_price}€</span>
+                            </div>
                         </div>
                     }
                 </figure>
@@ -78,6 +97,7 @@ function StoresList({ layout, stores }: Props) {
                                 <span>·</span>
                                 <span>Delivery {store.shipping_price}€</span>
                             </div>
+                            {activeCart(store, 'badge-xs')}
                         </div>
                     </Link>
                 </li>
@@ -90,7 +110,7 @@ function StoresList({ layout, stores }: Props) {
             {
                 stores?.length ? (
                     layout === "grid"
-                        ? stores.map(store => cardStore(store))
+                        ? stores.map(store => gridStore(store))
                         : listStores()
                 ) : (
                     <div className="flex flex-col gap-3 items-center">
@@ -103,7 +123,7 @@ function StoresList({ layout, stores }: Props) {
                 )
             }
         </div>
-    )
+    );
 }
 
 export default StoresList;
