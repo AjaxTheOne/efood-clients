@@ -5,8 +5,13 @@ import { BuildingOffice2Icon, ChevronDownIcon, XMarkIcon } from '@heroicons/reac
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import AddressForm from "../profile/AddressForm";
 import AddressesList from "./AddressesList";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 
-function Addresses() {
+type Props = {
+    cartSummary?: boolean
+};
+
+function Addresses({cartSummary}: Props) {
     const localStorageAddress = localStorage.getItem("address");
 
     const [addressesLoading, setAddressesLoading] = useState(false);
@@ -75,20 +80,46 @@ function Addresses() {
     
     return (
         <div>
-            <button 
-                className="btn btn-ghost flex justify-between items-center"
-                onClick={() => setOpenAddresses(true)}
-            >
-                <span>{
-                    selectedAddress
-                        ? <span>{selectedAddress.street} {selectedAddress.number}</span>
-                        : ( addressesLoading 
-                                ? <div className="skeleton h-4 w-28"></div>
-                                : "No address selected..."
-                        )
-                }</span>
-                <ChevronDownIcon className="size-4"/>
-            </button>
+            {
+                !cartSummary ? (
+                    <button 
+                        className="btn btn-ghost flex justify-between items-center"
+                        onClick={() => setOpenAddresses(true)}
+                    >
+                        <span>{
+                            selectedAddress
+                                ? <span>{selectedAddress.street} {selectedAddress.number}</span>
+                                : ( addressesLoading 
+                                        ? <div className="skeleton h-4 w-28"></div>
+                                        : "No address selected..."
+                                )
+                        }</span>
+                        <ChevronDownIcon className="size-4"/>
+                    </button>
+                ) : (
+                    <div className="w-full rounded-md border border-gray-300 bg-white">
+                        <a 
+                            onClick={() => setOpenAddresses(true)}
+                            href="javascript:void(0)"
+                            className="flex justify-between items-center p-3"
+                        >
+                            <span>{
+                                selectedAddress
+                                    ? <>
+                                        <p className="font-bold">{selectedAddress.street} {selectedAddress.number}</p>
+                                        <p className="text-gray-500 text-xs">Change address</p>
+                                    </>
+                                    : ( addressesLoading 
+                                            ? <div className="skeleton h-4 w-28"></div>
+                                            : "No address selected..."
+                                    )
+                            }</span>
+                            <ChevronRightIcon className="size-6"/>
+                        </a>
+                    </div>
+                )
+            }
+            
 
             <Dialog open={openAddresses} onClose={setOpenAddresses} className="relative z-10">
                 <DialogBackdrop

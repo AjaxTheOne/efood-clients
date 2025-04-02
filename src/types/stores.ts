@@ -32,3 +32,5 @@ export type StoresResponse = BaseResponse<{
 export type StoreResponse = BaseResponse<{
     store: Store;
 }>;
+
+export type ShippingMethods = "delivery" | "takeaway";
