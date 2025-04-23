@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
-import { ShippingMethods, StoreResponse, Store as StoreType } from "../types/stores";
+import { Link, useParams, useNavigate } from "react-router";
+import { ShippingMethod, StoreResponse, Store as StoreType } from "../types/stores";
 import axiosInstance from "../api/axiosInstance";
 import { Product, ProductCategory } from "../types/products";
 import { ChevronLeftIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -15,12 +15,17 @@ import { StoreInformationDialog } from "../components/stores/StoreInformationDia
 import { StoreProductDialog } from "../components/stores/StoreProductDialog";
 import { StoreCartSummaryDialog } from "../components/stores/StoreCartSummaryDialog";
 import { StoreShippingMethodDialog } from "../components/stores/StoreShippingMethodDialog";
+import { StorePaymentMethodDialog } from "../components/stores/StorePaymentMethodDialog";
+import { OrderCreatePayload, OrderCreateResponse } from "../types/orders";
 
 
 function Store() {
     const params = useParams();
+    const navigate = useNavigate();
 
     const cartProducts = useCartStore(state => state.selectStore(+params.id!)?.products);
+    const paymentMethod = useCartStore(state => state.selectStore(+params.id!)?.paymentMethod);
+    const shippingMethod = useCartStore(state => state.selectStore(+params.id!)?.shippingMethod);
 
     const [loading, setLoading] = useState(true);
     const [store, setStore] = useState<StoreType | null>(null);
@@ -32,6 +37,7 @@ function Store() {
     const [openProduct, setOpenProduct] = useState(false);
     const [openCartSummary, setOpenCartSummary] = useState(false);
     const [openShippingMethod, setOpenShippingMethod] = useState(false);
+    const [openPaymentMethod, setOpenPaymentMethod] = useState(false);
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productQuantity, setProductQuantity] = useState(0);
@@ -76,6 +82,42 @@ function Store() {
         setSelectedProduct(product);
 
         setProductQuantity(1);
+    };
+
+    const onSendOrder = () => {
+        const address = localStorage.getItem("address") || "{}";
+        const payload: OrderCreatePayload = {
+            address_id: JSON.parse(address).id,
+            store_id: store!.id,
+            payment_method: paymentMethod,
+            shipping_method: shippingMethod,
+            note: "",
+            tip: 0,
+            coupon_code: null,
+            products: cartProducts.map(product => ({
+                product_id: product.product.id,
+                quantity: product.quantity,
+                note: product.note || ""
+            }))
+        };
+
+        axiosInstance.post<OrderCreateResponse>("/client/orders", payload)
+            .then(response => {
+                if (!response.data.success) {
+                    // TODO: Show a failed message
+                    return;
+                }
+                
+                if (response.data.data.viva_redirect_url) {
+                    window.location.href = response.data.data.viva_redirect_url;
+                } else {
+                    console.log(response.data.data.order.id);
+                    navigate("/orders/" + response.data.data.order.id);
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     const skeleton = (
@@ -276,6 +318,8 @@ function Store() {
                         setOpen={setOpenCartSummary}
                         store={store}
                         onOpenShippingMethod={() => setOpenShippingMethod(true)}
+                        onOpenPaymentMethod={() => setOpenPaymentMethod(true)}
+                        onSendOrder={() => onSendOrder()}
                     />
                 }
 
@@ -283,6 +327,14 @@ function Store() {
                     <StoreShippingMethodDialog
                         open={openShippingMethod}
                         setOpen={setOpenShippingMethod}
+                        store={store}
+                    />
+                }
+
+                {!!store && 
+                    <StorePaymentMethodDialog
+                        open={openPaymentMethod}
+                        setOpen={setOpenPaymentMethod}
                         store={store}
                     />
                 }

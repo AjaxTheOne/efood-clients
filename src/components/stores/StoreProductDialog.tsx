@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Product } from "../../types/products";
 import { useCartStore } from "../../context/CartStore";
 import { Store } from "../../types/stores";
+import { useEffect, useState } from "react";
 
 type Props = {
     open: boolean;
@@ -19,9 +20,17 @@ type Props = {
 export function StoreProductDialog({ open, store, selectedProduct, productQuantity, onDecreaseQuantity, onIncreaseQuantity, setOpen }: Props) {
 
     const addItem = useCartStore(state => state.addItem);
+    const cartProduct = useCartStore(state => state.selectProduct(store!.id, selectedProduct!?.id));
+    
+    const [note, setNote] = useState(cartProduct?.note || "");
+
+    useEffect(() => {
+        setNote(cartProduct?.note || "");
+    }, [cartProduct]);
 
     const addToCart = () => {
-        addItem(store!.id, selectedProduct!, productQuantity);
+        addItem(store!.id, selectedProduct!, productQuantity, note);
+        setNote("");
         setOpen(false);
     };
 
@@ -61,7 +70,12 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                         <div className="p-4">
                             <fieldset className="fieldset">
                                 <legend className="fieldset-legend">Notes</legend>
-                                <textarea className="textarea h-24 bg-white w-full" placeholder="Write your preferences..."></textarea>
+                                <textarea 
+                                    value={note}
+                                    onChange={(ev) => { setNote(ev.target.value) }}
+                                    className="textarea h-24 bg-white w-full" 
+                                    placeholder="Write your preferences...">
+                                </textarea>
                             </fieldset>
                         </div>
                         <div className="bg-white p-4 shadow-lg flex justify-between gap-10">

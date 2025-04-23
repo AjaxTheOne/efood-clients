@@ -20,7 +20,7 @@ export function StoreCartSummaryProduct({ store, product, onSelectProduct }: Pro
     const [showQuantity, setShowQuantity] = useState(false);
     return (
         <div className="flex items-center gap-3" >
-            <div className="grow-0">
+            <div className="grow-0 min-w-[32px] relative">
                 {
                     !showQuantity ? (
                         <button
@@ -34,7 +34,7 @@ export function StoreCartSummaryProduct({ store, product, onSelectProduct }: Pro
                             <ChevronDownIcon className="size-2 text-white" />
                         </button>
                     ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 absolute -top-[21px]">
                             <button
                                 className="btn btn-square size-8"
                                 onClick={(event) => {

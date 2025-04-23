@@ -8,9 +8,14 @@ function MainLayout() {
     const [showHeader, setShowHeader] = useState(true);
 
     useEffect(() => {
-        setShowHeader(
-            !location.pathname.includes("/stores/")
-        );
+        const hideHeader = [
+            "/stores/", 
+            "/account",
+            "/orders",
+            "/addresses"
+        ].some(path => location.pathname.includes(path));
+        
+        setShowHeader(!hideHeader);
     }, [location]);
 
     return (

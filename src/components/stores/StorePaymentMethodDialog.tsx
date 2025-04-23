@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-import { Store, ShippingMethod } from "../../types/stores";
+import { Store, PaymentMethod } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
 
 type Props = {
@@ -9,10 +9,10 @@ type Props = {
     setOpen: (value: boolean) => void;
 };
 
-export function StoreShippingMethodDialog({ open, store, setOpen }: Props) {
+export function StorePaymentMethodDialog({ open, store, setOpen }: Props) {
 
-    const shippingMethod = useCartStore(state => state.selectStore(+store.id!)?.shippingMethod);
-    const updateShippingMethod = useCartStore(state => state.updateShippingMethod);
+    const paymentMethod = useCartStore(state => state.selectStore(+store.id!)?.paymentMethod);
+    const updatePaymentMethod = useCartStore(state => state.updatePaymentMethod);
     
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
@@ -38,25 +38,27 @@ export function StoreShippingMethodDialog({ open, store, setOpen }: Props) {
                         </div>
                         <div className="p-4">
                             <fieldset>
-                                <h1 className="font-bold text-2xl">Shipping method</h1>
-                                <p className="text-gray-500">Please select how want to receive your order.</p>
+                                <h1 className="font-bold text-2xl">Payment method</h1>
+                                <p className="text-gray-500">Please select how want to pay for your order.</p>
                                 <div className="mt-6 space-y-4">
                                     {
-                                        (["delivery", "takeaway"] as ShippingMethod[]).map((sm, index, array) => {
+                                        (["card", "cod"] as PaymentMethod[]).map((pm, index, array) => {
                                             return (
-                                                <div key={sm}
+                                                <div key={pm}
                                                     className={"flex items-center" + (index !== array.length - 1 ? " border-b border-gray-200 pb-4" : "")}>
                                                     <input
-                                                        defaultChecked={shippingMethod === sm}
-                                                        id={"shipping-method-" + sm}
-                                                        name="shipping-method"
+                                                        defaultChecked={paymentMethod === pm}
+                                                        id={"payment-method-" + pm}
+                                                        name="payment-method"
                                                         type="radio"
-                                                        value={sm}
+                                                        value={pm}
                                                         className="radio radio-success"
-                                                        onChange={() => updateShippingMethod(store!.id, sm)}
+                                                        onChange={() => updatePaymentMethod(store!.id, pm)}
                                                     />
-                                                    <label htmlFor={"shipping-method-" + sm} className="capitalize ml-3 block text-sm/6 font-medium text-gray-900">
-                                                        {sm}
+                                                    <label htmlFor={"shipping-method-" + pm} className="capitalize ml-3 block text-sm/6 font-medium text-gray-900">
+                                                        {
+                                                            pm === "card" ? "Card" : "Cash"
+                                                        }
                                                     </label>
                                                 </div>
                                             )
