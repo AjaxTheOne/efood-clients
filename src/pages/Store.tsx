@@ -26,8 +26,11 @@ function Store() {
     const cartProducts = useCartStore(state => state.selectStore(+params.id!)?.products);
     const paymentMethod = useCartStore(state => state.selectStore(+params.id!)?.paymentMethod);
     const shippingMethod = useCartStore(state => state.selectStore(+params.id!)?.shippingMethod);
+    const couponCode = useCartStore(state => state.selectStore(+params.id!)?.couponCode);
+    const clearCart = useCartStore(state => state.clearStore);
 
     const [loading, setLoading] = useState(true);
+    const [orderLoading, setOrderLoading] = useState(false);
     const [store, setStore] = useState<StoreType | null>(null);
     const [showBanner, setShowBanner] = useState(false);
     const [showStoreName, setShowStoreName] = useState(false);
@@ -85,6 +88,7 @@ function Store() {
     };
 
     const onSendOrder = () => {
+        setOrderLoading(true);
         const address = localStorage.getItem("address") || "{}";
         const payload: OrderCreatePayload = {
             address_id: JSON.parse(address).id,
@@ -93,7 +97,7 @@ function Store() {
             shipping_method: shippingMethod,
             note: "",
             tip: 0,
-            coupon_code: null,
+            coupon_code: couponCode || null,
             products: cartProducts.map(product => ({
                 product_id: product.product.id,
                 quantity: product.quantity,
@@ -107,6 +111,9 @@ function Store() {
                     // TODO: Show a failed message
                     return;
                 }
+
+                // clear cart
+                clearCart(+params.id!);
                 
                 if (response.data.data.viva_redirect_url) {
                     window.location.href = response.data.data.viva_redirect_url;
@@ -116,7 +123,7 @@ function Store() {
                 }
             })
             .finally(() => {
-                setLoading(false);
+                setOrderLoading(false);
             });
     };
 
@@ -317,6 +324,7 @@ function Store() {
                         open={openCartSummary}
                         setOpen={setOpenCartSummary}
                         store={store}
+                        loading={orderLoading}
                         onOpenShippingMethod={() => setOpenShippingMethod(true)}
                         onOpenPaymentMethod={() => setOpenPaymentMethod(true)}
                         onSendOrder={() => onSendOrder()}
@@ -335,7 +343,7 @@ function Store() {
                     <StorePaymentMethodDialog
                         open={openPaymentMethod}
                         setOpen={setOpenPaymentMethod}
-                        store={store}
+                        store={store} 
                     />
                 }
                 

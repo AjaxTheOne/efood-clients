@@ -10,6 +10,7 @@ import { StorePaymentMethod } from "./StorePaymentMethod";
 
 type Props = {
     open: boolean;
+    loading?: boolean;
     store: Store;
     setOpen: (value: boolean) => void;
     onOpenShippingMethod: () => void;
@@ -17,14 +18,16 @@ type Props = {
     onSendOrder: () => void;
 };
 
-export function StoreCartSummaryDialog({ open, store, setOpen, onOpenShippingMethod, onOpenPaymentMethod, onSendOrder }: Props) {
+export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenShippingMethod, onOpenPaymentMethod, onSendOrder }: Props) {
 
     const cartProducts = useCartStore(state => state.selectStore(+store.id!)?.products);
     const cartTotalProducts = useCartStore(state => state.storeTotalProducts(+store.id!));
     const cartTotalPrice = useCartStore(state => state.storeTotalPrice(+store.id!));
     const shippingMethod = useCartStore(state => state.selectStore(+store.id)?.shippingMethod);
     const paymentMethod = useCartStore(state => state.selectStore(+store.id!)?.paymentMethod);
-    
+    const couponCode = useCartStore(state => state.selectStore(+store.id!)?.couponCode);
+    const setCouponCode = useCartStore(state => state.setCouponCode);
+
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
             <DialogBackdrop
@@ -69,6 +72,8 @@ export function StoreCartSummaryDialog({ open, store, setOpen, onOpenShippingMet
                                     required
                                     autoComplete="off"
                                     className="input input-lg"
+                                    defaultValue={couponCode}
+                                    onChange={(e) => setCouponCode(store.id!, e.target.value)}
                                 />
                                 <StorePaymentMethod
                                     paymentMethod={paymentMethod}
@@ -108,6 +113,7 @@ export function StoreCartSummaryDialog({ open, store, setOpen, onOpenShippingMet
                         <div className="fixed p-3 w-full bg-white z-1" style={{ bottom: 0, left: 0 }}>
                             <button
                                 className="btn btn-lg btn-success text-white btn-block p-2 grid grid-cols-3"
+                                disabled={loading}
                                 onClick={() => {
                                     if (cartTotalProducts > 0) {
                                         onSendOrder();
@@ -117,22 +123,28 @@ export function StoreCartSummaryDialog({ open, store, setOpen, onOpenShippingMet
                                 }}
                             >
                                 {
-                                    cartTotalProducts > 0 ? (
-                                        <>
-                                            <div className="col-span-1 text-start">
-                                                <span className="inline-block p-1 min-w-[28px] font-bold text-black text-center rounded-lg bg-white text-sm">
-                                                    { cartTotalProducts }
-                                                </span>
+                                loading 
+                                    ? (
+                                        <span className="loading loading-spinner"></span>
+                                    )
+                                    : (
+                                        cartTotalProducts > 0 ? (
+                                            <>
+                                                <div className="col-span-1 text-start">
+                                                    <span className="inline-block p-1 min-w-[28px] font-bold text-black text-center rounded-lg bg-white text-sm">
+                                                        { cartTotalProducts }
+                                                    </span>
+                                                </div>
+                                                <div className="col-span-1 font-bold text-lg text-black text-center">Send Order</div>
+                                                <div className="col-span-1 font-bold text-black text-end">
+                                                    { cartTotalPrice?.toFixed(2) }€
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="text-center text-black col-span-3">
+                                                Add more
                                             </div>
-                                            <div className="col-span-1 font-bold text-lg text-black text-center">Send Order</div>
-                                            <div className="col-span-1 font-bold text-black text-end">
-                                                { cartTotalPrice?.toFixed(2) }€
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <div className="text-center text-black col-span-3">
-                                            Add more
-                                        </div>
+                                        )
                                     )
                                 }
                             </button>
