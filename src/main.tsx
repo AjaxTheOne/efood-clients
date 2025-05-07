@@ -14,6 +14,8 @@ import Checkout from './pages/Checkout.tsx';
 import Account from './pages/Account.tsx';
 import Orders from './pages/Orders.tsx';
 import Order from './pages/Order.tsx';
+import Profile from './pages/Profile.tsx';
+import Addresses from './pages/Addresses.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
@@ -45,6 +47,12 @@ createRoot(document.getElementById('root')!).render(
 					<Route path='/account' element={
 						<AuthRoute><Account/></AuthRoute>
 					}/>		
+					<Route path='/profile' element={
+						<AuthRoute><Profile/></AuthRoute>
+					}/>			
+					<Route path='/addresses' element={
+						<AuthRoute><Addresses/></AuthRoute>
+					}/>	
 					
 					<Route path='/orders' element={
 						<AuthRoute><Orders/></AuthRoute>

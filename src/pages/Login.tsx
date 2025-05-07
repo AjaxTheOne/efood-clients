@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 function Login() {
-    const { loading, login } = useAuth();
+    const { loading, error, login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const onLogin = () => {
         login({ email, password });
@@ -28,7 +30,7 @@ function Login() {
                             Email address
                         </label>
                         <div className="mt-2">
-                            <input
+                            <input 
                                 id="email"
                                 value={email}
                                 onChange={(ev) => { setEmail(ev.target.value) }}
@@ -36,7 +38,7 @@ function Login() {
                                 type="email"
                                 required
                                 autoComplete="off"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="input input-lg w-full"
                             />
                         </div>
                     </div>
@@ -53,20 +55,33 @@ function Login() {
                                 </div> */}
                         </div>
                         <div className="mt-2">
-                            <input
-                                value={password}
-                                onChange={(ev) => { setPassword(ev.target.value) }}
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                autoComplete="current-password"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                            />
+                            <label className="input input-lg w-full">
+                                <input 
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={ev => setPassword(ev.target.value)}
+                                    name="password"
+                                    placeholder="Password" 
+                                    className="grow" 
+                                />
+                                <button 
+                                    className="btn btn-sm btn-circle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    type="button"
+                                >
+                                    { 
+                                        showPassword ? <EyeSlashIcon className="size-4"/> : <EyeIcon className="size-4"/>
+                                    }
+                                </button>
+                            </label>
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
+                        {
+                            error && 
+                            <div className='text-error text-center'>{error}</div>
+                        }
                         <button
                             onClick={onLogin}
                             type="submit"

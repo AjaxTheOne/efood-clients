@@ -2,17 +2,41 @@ import { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 function Register() {
-    const { loading, register } = useAuth();
+    const { loading, error: authError, register } = useAuth();
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const [error, setError] = useState("");
+
     const onRegister = () => {
+        setError("");
+
+        if (!name) {
+            setError("Name is required");
+            return;
+        }
+
+        if (!email) {
+            setError("Email is required");
+            return;
+        }
+        
         if (password !== confirmPassword) {
-            alert("Password do not match!");
+            setError("Password do not match!");
+            return;
+        }
+
+        if (password.length < 6) {
+            setError("Password is less than 6 characters");
             return;
         }
 
@@ -46,7 +70,7 @@ function Register() {
                                 type="text"
                                 required
                                 autoComplete="off"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="input input-lg w-full"
                             />
                         </div>
                     </div>
@@ -64,7 +88,7 @@ function Register() {
                                 type="email"
                                 required
                                 autoComplete="off"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                className="input input-lg w-full"
                             />
                         </div>
                     </div>
@@ -81,16 +105,24 @@ function Register() {
                                 </div> */}
                         </div>
                         <div className="mt-2">
-                            <input
-                                value={password}
-                                onChange={(ev) => { setPassword(ev.target.value) }}
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                autoComplete="current-password"
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                            />
+                        <label className="input input-lg w-full">
+                            <input 
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={ev => setPassword(ev.target.value)}
+                                    name="password"
+                                    className="grow" 
+                                />
+                                <button 
+                                    className="btn btn-sm btn-circle" 
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    type="button"
+                                >
+                                    { 
+                                        showPassword ? <EyeSlashIcon className="size-4"/> : <EyeIcon className="size-4"/>
+                                    }
+                                </button>
+                            </label>
                         </div>
                     </div>
 
@@ -101,20 +133,34 @@ function Register() {
                             </label>
                         </div>
                         <div className="mt-2">
-                            <input
-                                value={confirmPassword}
-                                onChange={(ev) => { setConfirmPassword(ev.target.value) }}
-                                id="confirm-password"
-                                name="confirm-password"
-                                type="password"
-                                required
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                            />
+                            <label className="input input-lg w-full">
+                                <input 
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    value={confirmPassword}
+                                    onChange={ev => setConfirmPassword(ev.target.value)}
+                                    name="confirm-password"
+                                    className="grow" 
+                                />
+                                <button 
+                                    className="btn btn-sm btn-circle" 
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    type="button"
+                                >
+                                    { 
+                                        showConfirmPassword ? <EyeSlashIcon className="size-4"/> : <EyeIcon className="size-4"/>
+                                    }
+                                </button>
+                            </label>
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
+                        {
+                            (error || authError) && 
+                            <div className='text-error text-center'>{error || authError}</div>
+                        }
                         <button
+                            disabled={loading}
                             onClick={onRegister}
                             type="submit"
                             className="flex w-full justify-center btn btn-primary"

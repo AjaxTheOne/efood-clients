@@ -32,3 +32,7 @@ export type RegisterResponse = BaseResponse<{
     token: string;
     user: User;
 }>;
+
+export type UpdateResponse = BaseResponse<{
+    user: User;
+}>;

@@ -30,10 +30,16 @@ export type CreateAddressPayload = {
     door?: string;
 };
 
+export type UpdateAddressPayload = CreateAddressPayload;
+
 export type AddressResponse = BaseResponse<{
     addresses: Address[];
 }>;
 
 export type CreateAddressResponse = BaseResponse<{
+    address: Address;
+}>;
+
+export type UpdateAddressResponse = BaseResponse<{
     address: Address;
 }>;

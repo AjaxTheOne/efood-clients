@@ -12,6 +12,7 @@ function MainLayout() {
             "/stores/", 
             "/account",
             "/orders",
+            "/profile",
             "/addresses"
         ].some(path => location.pathname.includes(path));
         

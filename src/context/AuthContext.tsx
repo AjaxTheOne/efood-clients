@@ -1,22 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { LoginResponse, RegisterCredentials, LoginCredentials, RegisterResponse, User } from "../types/user";
+import { LoginResponse, RegisterCredentials, LoginCredentials, RegisterResponse, User, UpdateResponse } from "../types/user";
 import axiosInstance from "../api/axiosInstance";
+import {AxiosResponse} from "axios";
 import { useNavigate } from "react-router";
 
 const AuthContext = createContext<{
     user: User | null, 
     token: string | null,
     loading: boolean,
+    error: string,
     login: (credentials: LoginCredentials) => void,
     register: (credentials: RegisterCredentials) => void,
-    logout: () => void
+    logout: () => void,
+    update: (name: string, phone?: string) => void,
+    changePassword: (currentPassword: string, password: string) => void
 }>({
     user: null, 
     token: null, 
     loading: false,
+    error: "",
     login: () => null,
     logout: () => null,
-    register: () => null
+    register: () => null,
+    update: () => null,
+    changePassword: () => null
 });
 
 export const AuthProvider = ({ children }) => {
@@ -28,6 +35,8 @@ export const AuthProvider = ({ children }) => {
     );
     const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -53,6 +62,10 @@ export const AuthProvider = ({ children }) => {
 
                 const data = response.data.data;
                 afterAuthentication(data);
+                setError("");
+            })
+            .catch(e => {
+                setError(e.response.data.message);
             })
             .finally(() => {
                 setLoading(false);
@@ -71,7 +84,11 @@ export const AuthProvider = ({ children }) => {
                 }
 
                 const data = response.data.data;
+                setError("");
                 afterAuthentication(data);
+            })
+            .catch(e => {
+                setError(e.response.data.message);
             })
             .finally(() => {
                 setLoading(false);
@@ -88,6 +105,49 @@ export const AuthProvider = ({ children }) => {
         navigate("/");
     }
 
+    const update = (name: string, phone?: string) => {
+        setLoading(true);
+        axiosInstance.post<UpdateResponse>(
+                "/client/auth/update", 
+                {name, phone}
+            )
+            .then((response) => {
+                if (!response.data.success) {
+                    return;
+                }
+
+                const data = response.data.data;
+                localStorage.setItem("user", JSON.stringify(data.user));
+                setError("");
+            })
+            .catch(e => {
+                setError(e.response.data.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    const changePassword = (currentPassword: string, password: string) => {
+        setLoading(true);
+        axiosInstance.post<UpdateResponse>(
+                "/client/auth/change-password", 
+                {current_password: currentPassword, password}
+            )
+            .then((response) => {
+                if (!response.data.success) {
+                    return;
+                }
+                setError("");
+            })
+            .catch(e => {
+                setError(e.response.data.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
     const logout = () => {
         setUser(null);
         setToken(null);
@@ -96,7 +156,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, error, login, register, update, changePassword, logout }}>
             {children}
         </AuthContext.Provider>
     );

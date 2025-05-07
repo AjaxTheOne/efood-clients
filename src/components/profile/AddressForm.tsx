@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CreateAddressPayload } from "../../types/addresses";
+import { Address, CreateAddressPayload } from "../../types/addresses";
 
 const center = {
     lat: 40.6449329,
@@ -8,20 +8,21 @@ const center = {
 
 type Props = {
     loading: boolean;
+    address?: Address;
     onSubmit: (data: CreateAddressPayload) => void;
 };
 
-function AddressForm({ loading, onSubmit }: Props) {
+function AddressForm({ loading, address, onSubmit }: Props) {
 
-    const [street, setStreet] = useState("");
-    const [number, setNumber] = useState("");
-    const [city, setCity] = useState("");
-    const [postalCode, setPostalCode] = useState("");
+    const [street, setStreet] = useState(address?.street || "");
+    const [number, setNumber] = useState(address?.number?.toString() || "");
+    const [city, setCity] = useState(address?.city || "");
+    const [postalCode, setPostalCode] = useState(address?.postal_code || "");
     const [latitude, setLatitude] = useState(center.lat);
     const [longitude, setLongitude] = useState(center.lng);
-    const [phone, setPhone] = useState("");
-    const [floor, setFloor] = useState("");
-    const [door, setDoor] = useState("");
+    const [phone, setPhone] = useState(address?.phone || "");
+    const [floor, setFloor] = useState(address?.floor || "");
+    const [door, setDoor] = useState(address?.door || "");
 
     return (
         <div className="text-left">
@@ -164,7 +165,11 @@ function AddressForm({ loading, onSubmit }: Props) {
                 {
                     loading
                         ? <span className="loading loading-spinner"></span>
-                        : "Create Address"
+                        : (
+                            address 
+                            ? "Edit Address" 
+                            : "Create Address"
+                        )
                 }
             </button>
         </div>
