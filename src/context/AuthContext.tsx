@@ -3,9 +3,10 @@ import { LoginResponse, RegisterCredentials, LoginCredentials, RegisterResponse,
 import axiosInstance from "../api/axiosInstance";
 import {AxiosResponse} from "axios";
 import { useNavigate } from "react-router";
+import { socket } from "../api/sockets";
 
 const AuthContext = createContext<{
-    user: User | null, 
+    user: User | null,
     token: string | null,
     loading: boolean,
     error: string,
@@ -15,8 +16,8 @@ const AuthContext = createContext<{
     update: (name: string, phone?: string) => void,
     changePassword: (currentPassword: string, password: string) => void
 }>({
-    user: null, 
-    token: null, 
+    user: null,
+    token: null,
     loading: false,
     error: "",
     login: () => null,
@@ -29,7 +30,7 @@ const AuthContext = createContext<{
 export const AuthProvider = ({ children }) => {
     const localStorageUser = localStorage.getItem("user");
     const [user, setUser] = useState<User | null>(
-        localStorageUser 
+        localStorageUser
             ? JSON.parse(localStorageUser) as User
             : null
     );
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     const login = ({email, password}: LoginCredentials) => {
         setLoading(true);
         axiosInstance.post<LoginResponse>(
-                "/client/auth/login", 
+                "/client/auth/login",
                 {email, password}
             )
             .then((response) => {
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     const register = ({name, email, password}: RegisterCredentials) => {
         setLoading(true);
         axiosInstance.post<RegisterResponse>(
-                "/client/auth/register", 
+                "/client/auth/register",
                 {name, email, password}
             )
             .then((response) => {
@@ -101,14 +102,14 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        
+
         navigate("/");
     }
 
     const update = (name: string, phone?: string) => {
         setLoading(true);
         axiosInstance.post<UpdateResponse>(
-                "/client/auth/update", 
+                "/client/auth/update",
                 {name, phone}
             )
             .then((response) => {
@@ -131,7 +132,7 @@ export const AuthProvider = ({ children }) => {
     const changePassword = (currentPassword: string, password: string) => {
         setLoading(true);
         axiosInstance.post<UpdateResponse>(
-                "/client/auth/change-password", 
+                "/client/auth/change-password",
                 {current_password: currentPassword, password}
             )
             .then((response) => {
@@ -154,6 +155,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
     };
+
+    useEffect(() => {
+        socket.emit("user-id", {user_id: user?.id});
+    }, [user]);
 
     return (
         <AuthContext.Provider value={{ user, token, loading, error, login, register, update, changePassword, logout }}>

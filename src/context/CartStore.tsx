@@ -12,6 +12,7 @@ export type CartStoreStore = {
     products: CartProduct[];
     shippingMethod: ShippingMethod
     paymentMethod: PaymentMethod;
+    couponCode: string;
 };
 type CartStore = {
     stores: Record<number,CartStoreStore>,
@@ -31,6 +32,9 @@ type CartStore = {
 
     updateShippingMethod: (storeId: number, shippingMethod: ShippingMethod) => void;
     updatePaymentMethod: (storeId: number, paymentMethod: PaymentMethod) => void;
+    
+    setCouponCode: (storeId: number, couponCode: string) => void;
+    clearStore: (storeId: number) => void;
 }
 
 export const useCartStore = create(
@@ -63,7 +67,8 @@ export const useCartStore = create(
                     stores[storeId] = {
                         products: [],
                         shippingMethod: "delivery",
-                        paymentMethod: "card"
+                        paymentMethod: "card",
+                        couponCode: ""
                     };
                 }
 
@@ -155,6 +160,26 @@ export const useCartStore = create(
                 if (!stores[storeId]) { return state; }
 
                 stores[storeId].paymentMethod = paymentMethod;
+                state.stores = stores;
+
+                return {...state};
+            }),
+
+            setCouponCode: (storeId: number, couponCode: string) => set((state) => {
+                const stores = state.stores;
+                if (!stores[storeId]) { return state; }
+
+                stores[storeId].couponCode = couponCode;
+                state.stores = stores;
+
+                return {...state};
+            }),
+
+            clearStore: (storeId: number) => set((state) => {
+                const stores = state.stores;
+                if (!stores[storeId]) { return state; }
+
+                delete stores[storeId];
                 state.stores = stores;
 
                 return {...state};
