@@ -35,6 +35,7 @@ export type Order = {
 };
 
 export type OrderProduct = {
+    id: number;
     note: string;
     price: number;
     product_name: string;

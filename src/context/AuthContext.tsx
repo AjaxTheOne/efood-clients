@@ -157,7 +157,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        socket.emit("user-id", {user_id: user?.id});
+        // socket.emit("user-id", {user_id: user?.id});
     }, [user]);
 
     useEffect(() => {

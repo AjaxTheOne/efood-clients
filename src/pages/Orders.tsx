@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Link } from 'react-router';
 import axiosInstance from '../api/axiosInstance';
-import { Order, OrderListResponse } from '../types/orders';
+import { Order, OrderListResponse, OrderStatus } from '../types/orders';
 import dayjs from "dayjs";
 
 function Orders() {
@@ -25,6 +25,21 @@ function Orders() {
                 setLoading(false);
             });
     }, []);
+
+    const renderStatus = (status: OrderStatus) => {
+        switch (status) {
+            case "pending":
+                return <div className="badge badge-ghost">Pending</div>;
+            case "processing":
+                return <div className="badge badge-info">Processing</div>;
+            case "out_for_delivery":
+                return <div className="badge badge-neutral">Out for delivery</div>;
+            case "completed":
+                return <div className="badge badge-success">Completed</div>;
+            case "cancelled":
+                return <div className="badge badge-error">Cancelled</div>;
+        }
+    };
 
     return (
         <div>
@@ -58,22 +73,29 @@ function Orders() {
                                 <li key={order.id}>
                                     <Link 
                                         to={order.id.toString()}
-                                        className="flex py-4 gap-4"
+                                        className="flex py-4 gap-4 w-[100%]"
                                     >
                                         <div className="avatar shrink">
                                             <div className="w-12 h-12 rounded-full">
                                                 <img src={order.store.logo} />
                                             </div>
                                         </div>
-                                        <div className='flex flex-col gap-1'>
+                                        <div className='flex flex-col gap-2 grow-1'>
                                             <div className='font-bold text-lg'>
                                                 {order.store.name}
                                             </div>
-                                            <div className='text-gray-500 text-sm'>
-                                                {dayjs(order.created_at).format("DD/MM/YYYY")} · {dayjs(order.created_at).format("HH:mm")} · ID: {order.id}
+                                            <div className='flex items-center justify-between'>
+                                                <div className='text-gray-500 text-sm'>
+                                                    {dayjs(order.created_at).format("DD/MM/YYYY")} · {dayjs(order.created_at).format("HH:mm")} · ID: {order.id}
+                                                </div>
+                                                <div>
+                                                    {renderStatus(order.status)}
+                                                </div>
                                             </div>
-                                            <div className='text-gray-500 text-sm truncate'>
-                                                {order.products.map(product => `${product.quantity}x ${product.product_name}`).join(", ")}
+                                            <div className='text-gray-500 text-sm'>
+                                                <p className='line-clamp-1'>
+                                                    {order.products.map(product => `${product.quantity}x ${product.product_name}`).join(", ")}
+                                                </p>
                                             </div>
                                             {
                                                 order.note && <div className='text-gray-500 text-sm'>{order.note}</div>
