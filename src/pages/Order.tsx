@@ -37,6 +37,10 @@ function Order() {
         socket.on("driver-tracking-" + params.id, (data) => {
             setDriverLocation(data);
         });
+        socket.on("order-update-" + params.id, (data) => {
+            console.log(data);
+        });
+
 
         return () => {
             socket.off("driver-tracking-" + params.id);
