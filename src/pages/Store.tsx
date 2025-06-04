@@ -17,7 +17,7 @@ import { StoreCartSummaryDialog } from "../components/stores/StoreCartSummaryDia
 import { StoreShippingMethodDialog } from "../components/stores/StoreShippingMethodDialog";
 import { StorePaymentMethodDialog } from "../components/stores/StorePaymentMethodDialog";
 import { OrderCreatePayload, OrderCreateResponse } from "../types/orders";
-
+import { useQuery } from '@tanstack/react-query';
 
 function Store() {
     const params = useParams();
@@ -29,9 +29,7 @@ function Store() {
     const couponCode = useCartStore(state => state.selectStore(+params.id!)?.couponCode);
     const clearCart = useCartStore(state => state.clearStore);
 
-    const [loading, setLoading] = useState(true);
     const [orderLoading, setOrderLoading] = useState(false);
-    const [store, setStore] = useState<StoreType | null>(null);
     const [showBanner, setShowBanner] = useState(false);
     const [showStoreName, setShowStoreName] = useState(false);
     const [showCategories, setShowCategories] = useState(false);
@@ -45,21 +43,14 @@ function Store() {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [productQuantity, setProductQuantity] = useState(0);
 
+    const {data: store, isLoading} = useQuery({
+        queryKey: ["store", params.id],
+        queryFn: () => axiosInstance.get<StoreResponse>("/client/stores/" + params.id),
+        select: (response) => response.data.data.store,
+    });
+
     useEffect(() => {
         const id = params.id;
-
-        axiosInstance.get<StoreResponse>("/client/stores/" + id)
-            .then(response => {
-                if (!response.data.success) {
-                    return;
-                }
-                // TODO Handle this on the backend
-                // response.data.data.store.product_categories = response.data.data.store.product_categories?.filter(pc => !!pc.products?.length);
-                setStore(response.data.data.store);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
 
         window.addEventListener('scroll', isSticky);
         return () => {
@@ -181,7 +172,7 @@ function Store() {
     );
 
     return (
-        loading ? (
+        isLoading ? (
             skeleton
         ) :
             <main>

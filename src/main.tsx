@@ -16,52 +16,61 @@ import Orders from './pages/Orders.tsx';
 import Order from './pages/Order.tsx';
 import Profile from './pages/Profile.tsx';
 import Addresses from './pages/Addresses.tsx';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import './i18n';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
-		<AuthProvider>
-			<Routes>
-				<Route element={<MainLayout/>}>
-					<Route path='/' element={
-						<NoAuthRoute><Home/></NoAuthRoute>
-					}></Route>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<Routes>
+					<Route element={<MainLayout />}>
+						<Route path='/' element={
+							<NoAuthRoute><Home /></NoAuthRoute>
+						}></Route>
 
-					<Route path='/login' element={
-						<NoAuthRoute><Login/></NoAuthRoute>
-					}/>
+						<Route path='/login' element={
+							<NoAuthRoute><Login /></NoAuthRoute>
+						} />
 
-					<Route path='/register' element={
-						<NoAuthRoute><Register/></NoAuthRoute>
-					}/>
+						<Route path='/register' element={
+							<NoAuthRoute><Register /></NoAuthRoute>
+						} />
 
-					<Route path='/stores' element={
-						<AuthRoute><Stores/></AuthRoute>
-					}/>
-					<Route path='/stores/:id' element={
-						<AuthRoute><Store/></AuthRoute>
-					}/>	
-					<Route path='/stores/:id/checkout' element={
-						<AuthRoute><Checkout/></AuthRoute>
-					}/>		
+						<Route path='/stores' element={
+							<AuthRoute><Stores /></AuthRoute>
+						} />
+						<Route path='/stores/:id' element={
+							<AuthRoute><Store /></AuthRoute>
+						} />
+						<Route path='/stores/:id/checkout' element={
+							<AuthRoute><Checkout /></AuthRoute>
+						} />
 
-					<Route path='/account' element={
-						<AuthRoute><Account/></AuthRoute>
-					}/>		
-					<Route path='/profile' element={
-						<AuthRoute><Profile/></AuthRoute>
-					}/>			
-					<Route path='/addresses' element={
-						<AuthRoute><Addresses/></AuthRoute>
-					}/>	
-					
-					<Route path='/orders' element={
-						<AuthRoute><Orders/></AuthRoute>
-					}/>
-					<Route path='/orders/:id' element={
-						<AuthRoute><Order/></AuthRoute>
-					}/>		
-				</Route>
-			</Routes>
-		</AuthProvider>
+						<Route path='/account' element={
+							<AuthRoute><Account /></AuthRoute>
+						} />
+						<Route path='/profile' element={
+							<AuthRoute><Profile /></AuthRoute>
+						} />
+						<Route path='/addresses' element={
+							<AuthRoute><Addresses /></AuthRoute>
+						} />
+
+						<Route path='/orders' element={
+							<AuthRoute><Orders /></AuthRoute>
+						} />
+						<Route path='/orders/:id' element={
+							<AuthRoute><Order /></AuthRoute>
+						} />
+					</Route>
+				</Routes>
+			</AuthProvider>
+		</QueryClientProvider>
 	</BrowserRouter>
 )

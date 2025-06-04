@@ -4,10 +4,11 @@ import { useCartStore } from "../../context/CartStore";
 
 type Props = {
     layout: "list" | "grid";
+    isFetched: boolean;
     stores: Store[];
 };
 
-function StoresList({ layout, stores }: Props) {
+function StoresList({ layout, stores, isFetched }: Props) {
     const cartStores = useCartStore(state => state.stores);
 
     const activeCart = (store: Store, size: string = "badge-sm") =>
@@ -108,10 +109,14 @@ function StoresList({ layout, stores }: Props) {
     return (
         <div className="flex flex-col gap-3">
             {
-                stores?.length ? (
-                    layout === "grid"
-                        ? stores.map(store => gridStore(store))
-                        : listStores()
+                isFetched ? (
+                    stores.length ? (
+                        layout === "grid"
+                            ? stores.map(store => gridStore(store))
+                            : listStores()
+                    ) : (
+                        <div className="text-gray-500 text-center text-lg my-10">No available stores, please change the filters</div>
+                    )
                 ) : (
                     <div className="flex flex-col gap-3 items-center">
                         {
