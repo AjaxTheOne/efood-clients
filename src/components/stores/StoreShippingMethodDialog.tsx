@@ -2,6 +2,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Store, ShippingMethod } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     open: boolean;
@@ -11,6 +12,8 @@ type Props = {
 
 export function StoreShippingMethodDialog({ open, store, setOpen }: Props) {
 
+    const general = useTranslation(undefined, {keyPrefix: "shipping_method"});
+    const {t} = useTranslation(undefined, {keyPrefix: "store.shipping_method"});
     const shippingMethod = useCartStore(state => state.selectStore(+store.id!)?.shippingMethod);
     const updateShippingMethod = useCartStore(state => state.updateShippingMethod);
     
@@ -38,8 +41,8 @@ export function StoreShippingMethodDialog({ open, store, setOpen }: Props) {
                         </div>
                         <div className="p-4">
                             <fieldset>
-                                <h1 className="font-bold text-2xl">Shipping method</h1>
-                                <p className="text-gray-500">Please select how want to receive your order.</p>
+                                <h1 className="font-bold text-2xl">{t("title")}</h1>
+                                <p className="text-gray-500">{t("description")}</p>
                                 <div className="mt-6 space-y-4">
                                     {
                                         (["delivery", "takeaway"] as ShippingMethod[]).map((sm, index, array) => {
@@ -56,7 +59,7 @@ export function StoreShippingMethodDialog({ open, store, setOpen }: Props) {
                                                         onChange={() => updateShippingMethod(store!.id, sm)}
                                                     />
                                                     <label htmlFor={"shipping-method-" + sm} className="capitalize ml-3 block text-sm/6 font-medium text-gray-900">
-                                                        {sm}
+                                                        {general.t(sm)}
                                                     </label>
                                                 </div>
                                             )

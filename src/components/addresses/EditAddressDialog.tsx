@@ -2,6 +2,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeftIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import AddressForm from "../profile/AddressForm";
 import { Address, UpdateAddressPayload } from "../../types/addresses";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     open: boolean;
@@ -13,6 +14,7 @@ type Props = {
 
 export function EditAddressDialog({ open, address, loading, setOpen, onUpdateAddress }: Props) {
 
+    const { t } = useTranslation(undefined, { keyPrefix: "addresses.edit" });
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
             <DialogBackdrop
@@ -36,7 +38,7 @@ export function EditAddressDialog({ open, address, loading, setOpen, onUpdateAdd
                             </button>
                         </div>
                         <div className="p-4">
-                            <h1 className="font-bold text-2xl">Update address</h1>
+                            <h1 className="font-bold text-2xl">{t("title")}</h1>
                         </div>
                         <div className='p-4'>
                             <AddressForm

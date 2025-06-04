@@ -2,6 +2,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Store, PaymentMethod } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     open: boolean;
@@ -11,6 +12,8 @@ type Props = {
 
 export function StorePaymentMethodDialog({ open, store, setOpen }: Props) {
 
+    const general = useTranslation(undefined, {keyPrefix: "payment_method"});
+    const {t} = useTranslation(undefined, {keyPrefix: "store.payment_method"});
     const paymentMethod = useCartStore(state => state.selectStore(+store.id!)?.paymentMethod);
     const updatePaymentMethod = useCartStore(state => state.updatePaymentMethod);
     
@@ -38,8 +41,8 @@ export function StorePaymentMethodDialog({ open, store, setOpen }: Props) {
                         </div>
                         <div className="p-4">
                             <fieldset>
-                                <h1 className="font-bold text-2xl">Payment method</h1>
-                                <p className="text-gray-500">Please select how want to pay for your order.</p>
+                                <h1 className="font-bold text-2xl">{t("title")}</h1>
+                                <p className="text-gray-500">{t("description")}</p>
                                 <div className="mt-6 space-y-4">
                                     {
                                         (["card", "cod"] as PaymentMethod[]).map((pm, index, array) => {
@@ -56,9 +59,7 @@ export function StorePaymentMethodDialog({ open, store, setOpen }: Props) {
                                                         onChange={() => updatePaymentMethod(store!.id, pm)}
                                                     />
                                                     <label htmlFor={"shipping-method-" + pm} className="capitalize ml-3 block text-sm/6 font-medium text-gray-900">
-                                                        {
-                                                            pm === "card" ? "Card" : "Cash"
-                                                        }
+                                                        {general.t(pm)}
                                                     </label>
                                                 </div>
                                             )

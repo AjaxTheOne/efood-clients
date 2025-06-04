@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Store } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     layout: "list" | "grid";
@@ -9,20 +10,27 @@ type Props = {
 };
 
 function StoresList({ layout, stores, isFetched }: Props) {
+    const { t } = useTranslation(undefined, {keyPrefix: "stores.list"});
     const cartStores = useCartStore(state => state.stores);
 
-    const activeCart = (store: Store, size: string = "badge-sm") =>
-        cartStores?.[store.id]?.products?.length ? (
+    const activeCart = (store: Store, size: string = "badge-sm") => {
+        console.log(cartStores);
+        return cartStores?.[store.id]?.products?.length ? (
             <div className="mb-3">
                 <div className={"badge badge-error text-white " + size}>
-                    {cartStores?.[store.id]?.products.reduce((total, product) => {
-                        return total + product.quantity;
-                    }, 0)} products in cart
+                    {
+                        t("products_in_cart", {
+                            count: cartStores?.[store.id]?.products.reduce((total, product) => {
+                            return total + product.quantity;
+                        }, 0)})
+                    }
                 </div>
             </div>
         ) : (
             null
-        )
+        );
+    }
+        
     
 
     const gridStore = (store: Store) => (
@@ -31,7 +39,6 @@ function StoresList({ layout, stores, isFetched }: Props) {
                 <figure className="relative">
                     <img
                         src={store.cover}
-                        alt="Shoes"
                     />
                     {
                         store.logo &&
@@ -44,18 +51,23 @@ function StoresList({ layout, stores, isFetched }: Props) {
                             </div>
                         </div>
                     }
-                    {
-                        store.shipping_price &&
+                    
+                        
                         <div
                             className="absolute"
                             style={{ right: "10px", bottom: "0" }}
                         >
                             {activeCart(store)}
-                            <div className="px-1.5 bg-white rounded-t-lg text-center">
-                                <span className="text-xs">Delivery {store.shipping_price}€</span>
-                            </div>
+                            {
+                                store.shipping_price && 
+                                <div className="px-1.5 bg-white rounded-t-lg text-center">
+                                    <span className="text-xs">
+                                        {t("delivery_fee", {fee: store.shipping_price})}
+                                    </span>
+                                </div>
+                            }
                         </div>
-                    }
+                    
                 </figure>
                 <div className="card-body p-3">
                     <h2 className="card-title">
@@ -96,7 +108,7 @@ function StoresList({ layout, stores, isFetched }: Props) {
                                 }
                                 <span>{store.minimum_cart_value}€</span>
                                 <span>·</span>
-                                <span>Delivery {store.shipping_price}€</span>
+                                { !!store.shipping_price && <span>{t("delivery_fee", {fee: store.shipping_price})}</span>}
                             </div>
                             {activeCart(store, 'badge-xs')}
                         </div>
@@ -115,7 +127,7 @@ function StoresList({ layout, stores, isFetched }: Props) {
                             ? stores.map(store => gridStore(store))
                             : listStores()
                     ) : (
-                        <div className="text-gray-500 text-center text-lg my-10">No available stores, please change the filters</div>
+                        <div className="text-gray-500 text-center text-lg my-10">{t("no_stores_filters")}</div>
                     )
                 ) : (
                     <div className="flex flex-col gap-3 items-center">

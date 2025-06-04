@@ -5,9 +5,12 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import axiosInstance from '../api/axiosInstance';
 import { ChangePasswordDialog } from '../components/profile/ChangePasswordDialog';
+import { useTranslation } from 'react-i18next';
 
 function Profile() {
     const { user, loading, error, update, logout } = useAuth();
+    const { t } = useTranslation(undefined, { keyPrefix: "profile" });
+        
 
     const [name, setName] = useState(user!.name);
     const [phone, setPhone] = useState(user!.phone || "");
@@ -29,12 +32,12 @@ function Profile() {
             </div>
             <div className='p-4'>
                 <div className='font-bold text-2xl mb-10'>
-                    Profile
+                    {t("title")}
                 </div>
                 <div className='flex flex-col gap-8'>
                     <label className="floating-label">
-                        <input type="email" disabled value={user!.email} placeholder="Email" className="input input-lg w-full" />
-                        <span>Email</span>
+                        <input type="email" disabled value={user!.email} placeholder={t("form.email_placeholder")} className="input input-lg w-full" />
+                        <span>{t("form.email")}</span>
                     </label>
                     <label className="floating-label">
                         <input 
@@ -42,10 +45,10 @@ function Profile() {
                             value={name}
                             onChange={ev => setName(ev.target.value)}
                             name="name"
-                            placeholder="Name" 
+                            placeholder={t("form.name_placeholder")}
                             className="input input-lg w-full" 
                         />
-                        <span>Name</span>
+                        <span>{t("form.name")}</span>
                     </label>
                     <label className="floating-label">
                         <input 
@@ -53,10 +56,10 @@ function Profile() {
                             value={phone}
                             onChange={ev => setPhone(ev.target.value)}
                             name="phone"
-                            placeholder="Phone" 
+                            placeholder={t("form.phone_placeholder")}
                             className="input input-lg w-full" 
                         />
-                        <span>Phone</span>
+                        <span>{t("form.phone")}</span>
                     </label>
                     {
                         error && 
@@ -70,7 +73,7 @@ function Profile() {
                         {
                             loading
                                 ? <span className="loading loading-spinner"></span>
-                                : "Save changes"
+                                : t("form.save_changes")
                         }
                     </button>
                 </div>
@@ -82,7 +85,7 @@ function Profile() {
                     onClick={() => setOpenChangePassword(true) }
                 >
                     <div className='flex justify-between items-center'>
-                        Change password
+                        {t("change_password")}
                         <ChevronRightIcon className='size-5 text-gray-500'/>
                     </div>
                 </a>
@@ -92,7 +95,7 @@ function Profile() {
                     onClick={() => logout() }
                 >
                     <div className='flex justify-between items-center'>
-                        Log out
+                        {t("log_out")}
                         <ChevronRightIcon className='size-5 text-gray-500'/>
                     </div>
                 </a>

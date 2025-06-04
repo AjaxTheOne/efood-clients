@@ -7,8 +7,10 @@ import StoresList from "../components/stores/StoresList";
 import { Store, StoresResponse } from "../types/stores";
 import StoresLayoutToggle from "../components/stores/StoresLayoutToggle";
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from "react-i18next";
 
 function Stores() {
+    const { t } = useTranslation(undefined, { keyPrefix: 'stores' });
     const [searchParams, setSearchParams] = useSearchParams();
     const [layout, setLayout] = useState<"list" | "grid">("grid");
 
@@ -60,7 +62,7 @@ function Stores() {
                     <div>
                         {
                             stores.isFetched ? (
-                                <h2 className="font-bold text-lg">{stores.data!.length} stores</h2>
+                                <h2 className="font-bold text-lg">{t("title", {numberOfStores: stores.data!.length})}</h2>
                             ) : (
                                 <div className="skeleton h-[28px] w-[160px]"></div> 
                             )

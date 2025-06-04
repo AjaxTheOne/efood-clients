@@ -6,12 +6,14 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/re
 import AddressForm from "../profile/AddressForm";
 import AddressesList from "./AddressesList";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     cartSummary?: boolean
 };
 
 function Addresses({cartSummary}: Props) {
+    const { t } = useTranslation(undefined, { keyPrefix: 'header.addresses.add_new' });
     const localStorageAddress = localStorage.getItem("address");
 
     const [addressesLoading, setAddressesLoading] = useState(false);
@@ -91,7 +93,7 @@ function Addresses({cartSummary}: Props) {
                                 ? <span>{selectedAddress.street} {selectedAddress.number}</span>
                                 : ( addressesLoading 
                                         ? <div className="skeleton h-4 w-28"></div>
-                                        : "No address selected..."
+                                        : t("no_address_selected")
                                 )
                         }</span>
                         <ChevronDownIcon className="size-4"/>
@@ -107,11 +109,11 @@ function Addresses({cartSummary}: Props) {
                                 selectedAddress
                                     ? <>
                                         <p className="font-bold">{selectedAddress.street} {selectedAddress.number}</p>
-                                        <p className="text-gray-500 text-xs">Change address</p>
+                                        <p className="text-gray-500 text-xs">{t("change_address")}</p>
                                     </>
                                     : ( addressesLoading 
                                             ? <div className="skeleton h-4 w-28"></div>
-                                            : "No address selected..."
+                                            : t("no_address_selected")
                                     )
                             }</span>
                             <ChevronRightIcon className="size-6"/>
@@ -137,7 +139,7 @@ function Addresses({cartSummary}: Props) {
                                 <div></div>
 
                                 <DialogTitle as="h3" className="text-base text-center font-semibold text-gray-900">
-                                    Addresses
+                                    {t("title")}
                                 </DialogTitle>
 
                                 <div className="text-end">
@@ -152,7 +154,9 @@ function Addresses({cartSummary}: Props) {
                             <div>
                                 {
                                     !addresses?.length ? (
-                                        <div className="my-4 text-xl text-center text-gray-400">No addresses yet...</div>
+                                        <div className="my-4 text-xl text-center text-gray-400">
+                                            {t("no_addresses")}
+                                        </div>
                                     ) : (
                                         <div className="my-4">
                                             <AddressesList 
@@ -173,7 +177,7 @@ function Addresses({cartSummary}: Props) {
                                     type="button"
                                     className="inline-flex w-full justify-center btn btn-accent"
                                 >
-                                    Add new address
+                                    {t("new_address")}
                                 </button>
                             </div>
                         </DialogPanel>
@@ -199,7 +203,7 @@ function Addresses({cartSummary}: Props) {
                                 </div>
                                 <div className="mt-3 text-center sm:mt-5">
                                     <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
-                                        New Address
+                                        {t("title")}
                                     </DialogTitle>
                                     {/* <div className="mt-2 hidden">
                                         <GoogleMap
@@ -231,7 +235,7 @@ function Addresses({cartSummary}: Props) {
                                     onClick={() => setOpenCreateAddress(false)}
                                     className="inline-flex w-full justify-center btn btn-soft"
                                 >
-                                    Close
+                                    {t("close")}
                                 </button>
                             </div>
                         </DialogPanel>

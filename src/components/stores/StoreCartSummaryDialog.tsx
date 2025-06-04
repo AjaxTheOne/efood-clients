@@ -7,6 +7,7 @@ import Addresses from "../header/Addresses";
 import { ProductQuantityControls } from "./ProductQuantityControls";
 import { StoreCartSummaryProduct } from "./StoreCartSummaryProduct";
 import { StorePaymentMethod } from "./StorePaymentMethod";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     open: boolean;
@@ -20,6 +21,8 @@ type Props = {
 
 export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenShippingMethod, onOpenPaymentMethod, onSendOrder }: Props) {
 
+    const { t } = useTranslation(undefined, { keyPrefix: 'store.summary' });
+    const general = useTranslation();
     const cartProducts = useCartStore(state => state.selectStore(+store.id!)?.products);
     const cartTotalProducts = useCartStore(state => state.storeTotalProducts(+store.id!));
     const cartTotalPrice = useCartStore(state => state.storeTotalPrice(+store.id!));
@@ -51,13 +54,13 @@ export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenSh
                             </button>
                         </div>
                         <div className="p-4">
-                            <h1 className="font-bold text-2xl">Cart</h1>
+                            <h1 className="font-bold text-2xl">{t("title")}</h1>
                             <a
                                 href="javascript:void(0)"
                                 className="inline-flex items-center gap-2"
                                 onClick={() => onOpenShippingMethod()}
                             >
-                                <span className="text-xs capitalize">{shippingMethod}: 10' - 20'</span>
+                                <span className="text-xs capitalize">{general.t(`shipping_method.${shippingMethod}_estimation`, {estimation: "10' - 20'"})}</span>
                                 <ChevronDownIcon className="size-3" />
                             </a>
                         </div>
@@ -68,7 +71,7 @@ export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenSh
                                     id="coupon"
                                     name="coupon"
                                     type="text"
-                                    placeholder="Coupon"
+                                    placeholder={t("coupon_placeholder")}
                                     required
                                     autoComplete="off"
                                     className="input input-lg"
@@ -104,7 +107,7 @@ export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenSh
                                 </span>
                             </div>
                             <div className="grow-1">
-                                Cart total
+                                {t("cart_total")}
                             </div>
                             <div className="grow-0 font-bold text-xs">
                                 { cartTotalPrice?.toFixed(2) }€
@@ -112,7 +115,7 @@ export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenSh
                         </div>
                         <div className="fixed p-3 w-full bg-white z-1" style={{ bottom: 0, left: 0 }}>
                             <button
-                                className="btn btn-lg btn-success text-white btn-block p-2 grid grid-cols-3"
+                                className="btn btn-lg btn-success text-white btn-block p-2 grid grid-cols-7"
                                 disabled={loading}
                                 onClick={() => {
                                     if (cartTotalProducts > 0) {
@@ -135,14 +138,14 @@ export function StoreCartSummaryDialog({ open, loading, store, setOpen, onOpenSh
                                                         { cartTotalProducts }
                                                     </span>
                                                 </div>
-                                                <div className="col-span-1 font-bold text-lg text-black text-center">Send Order</div>
+                                                <div className="col-span-5 font-bold text-lg text-black text-center">{t("send_order")}</div>
                                                 <div className="col-span-1 font-bold text-black text-end">
                                                     { cartTotalPrice?.toFixed(2) }€
                                                 </div>
                                             </>
                                         ) : (
-                                            <div className="text-center text-black col-span-3">
-                                                Add more
+                                            <div className="text-center text-black col-span-full">
+                                                {t("add_more")}
                                             </div>
                                         )
                                     )

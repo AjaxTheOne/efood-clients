@@ -5,6 +5,7 @@ import { Product } from "../../types/products";
 import { useCartStore } from "../../context/CartStore";
 import { Store } from "../../types/stores";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     open: boolean;
@@ -19,6 +20,7 @@ type Props = {
 
 export function StoreProductDialog({ open, store, selectedProduct, productQuantity, onDecreaseQuantity, onIncreaseQuantity, setOpen }: Props) {
 
+    const { t } = useTranslation(undefined, { keyPrefix: 'store.product.dialog' });
     const addItem = useCartStore(state => state.addItem);
     const cartProduct = useCartStore(state => state.selectProduct(store!.id, selectedProduct!?.id));
     
@@ -69,12 +71,12 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                         </div>
                         <div className="p-4">
                             <fieldset className="fieldset">
-                                <legend className="fieldset-legend">Notes</legend>
+                                <legend className="fieldset-legend">{t("notes")}</legend>
                                 <textarea 
                                     value={note}
                                     onChange={(ev) => { setNote(ev.target.value) }}
                                     className="textarea h-24 bg-white w-full" 
-                                    placeholder="Write your preferences...">
+                                    placeholder={t("preferences_placeholder")}>
                                 </textarea>
                             </fieldset>
                         </div>
@@ -89,7 +91,7 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                                     className="btn btn-lg btn-success text-white btn-block"
                                     onClick={() => addToCart()}
                                 >
-                                    Add to cart
+                                    {t("add_to_cart")}
                                 </button>
                             </div>
                         </div>

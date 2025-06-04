@@ -3,15 +3,16 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Store } from "../../types/stores";
 import GoogleMap from "google-maps-react-markers";
 import MapMarker from "../profile/MapMarker";
+import { useTranslation } from "react-i18next";
 
 const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday"
 ];
 
 type Props = {
@@ -21,6 +22,9 @@ type Props = {
 };
 
 export function StoreInformationDialog({ open, store, setOpen }: Props) {
+    const general = useTranslation(undefined, { keyPrefix: 'days' });
+    const { t } = useTranslation(undefined, { keyPrefix: 'store.information' });
+
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
             <DialogBackdrop
@@ -44,7 +48,7 @@ export function StoreInformationDialog({ open, store, setOpen }: Props) {
                         </div>
                         <div>
                             <h2 className="font-bold text-md">
-                                Store Address
+                                {t("address")}
                             </h2>
                             <p className="text-gray-400 mb-2">
                                 {store?.address}
@@ -74,13 +78,13 @@ export function StoreInformationDialog({ open, store, setOpen }: Props) {
                                 store?.working_hours?.length &&
                                 <>
                                     <h2 className="font-bold text-md mt-4">
-                                        Working Hours
+                                        {t("working_hours")}
                                     </h2>
                                     <ul className="divide-y divide-gray-200">
                                         {
                                             store?.working_hours.map((wh, index) => (
                                                 <li key={index} className="py-3 flex items-center justify-between">
-                                                    <div className="font-bold text-sm">{days[index]}</div>
+                                                    <div className="font-bold text-sm">{general.t(days[index])}</div>
                                                     <div className="text-gray-500 text-sm">{wh.start} - {wh.end}</div>
                                                 </li>
                                             ))

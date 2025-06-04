@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Address, CreateAddressPayload } from "../../types/addresses";
+import { useTranslation } from "react-i18next";
 
 const center = {
     lat: 40.6449329,
@@ -14,6 +15,7 @@ type Props = {
 
 function AddressForm({ loading, address, onSubmit }: Props) {
 
+    const { t, i18n } = useTranslation(undefined, { keyPrefix: 'header.addresses.add_new' });
     const [street, setStreet] = useState(address?.street || "");
     const [number, setNumber] = useState(address?.number?.toString() || "");
     const [city, setCity] = useState(address?.city || "");
@@ -31,7 +33,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
 
                 <div className="col-span-1">
                     <label htmlFor="street-address" className="block text-sm/6 font-medium text-gray-900">
-                        Street address
+                        {t("form.street_address")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -48,7 +50,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
 
                 <div className="col-span-1">
                     <label htmlFor="street-address" className="block text-sm/6 font-medium text-gray-900">
-                        Number
+                        {t("form.number")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -65,7 +67,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
 
                 <div className="col-span-1">
                     <label htmlFor="city" className="block text-sm/6 font-medium text-gray-900">
-                        City
+                        {t("form.city")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -82,7 +84,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
 
                 <div className="col-span-1">
                     <label htmlFor="postal-code" className="block text-sm/6 font-medium text-gray-900">
-                        Postal
+                        {t("form.postal")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -99,7 +101,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
 
                 <div className="">
                     <label htmlFor="phone" className="block text-sm/6 font-medium text-gray-900">
-                        Phone
+                        {t("form.phone")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -115,7 +117,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
                 </div>
                 <div className="">
                     <label htmlFor="floor" className="block text-sm/6 font-medium text-gray-900">
-                        Floor
+                        {t("form.floor")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -131,7 +133,7 @@ function AddressForm({ loading, address, onSubmit }: Props) {
                 </div>
                 <div className="">
                     <label htmlFor="door" className="block text-sm/6 font-medium text-gray-900">
-                        Door
+                        {t("form.door")}
                     </label>
                     <div className="mt-2">
                         <input
@@ -167,8 +169,8 @@ function AddressForm({ loading, address, onSubmit }: Props) {
                         ? <span className="loading loading-spinner"></span>
                         : (
                             address 
-                            ? "Edit Address" 
-                            : "Create Address"
+                            ? t("edit_address")
+                            : t("create_address")
                         )
                 }
             </button>

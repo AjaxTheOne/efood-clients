@@ -4,6 +4,7 @@ import { Store } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
 import { useEffect, useState } from "react";
 import { ProductQuantityControls } from "./ProductQuantityControls";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     store: Store,
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function StoreProduct({ store, product, onSelectProduct }: Props) {
+    const { t } = useTranslation(undefined, {keyPrefix: "store.product"});
     const productQuantity = useCartStore(state => state.selectProduct(store.id, product.id)?.quantity);
     const removeItem = useCartStore(state => state.removeItem);
     const increaseQuantity = useCartStore(state => state.increaseQuantity);
@@ -39,7 +41,7 @@ export function StoreProduct({ store, product, onSelectProduct }: Props) {
                     <p className="text-gray-500 text-xs">{product.description}</p>
                 }
                 <div className="text-sm">
-                    From {product.price}€
+                    {t("price_from", {price: product.price})}
                 </div>
             </div>
 

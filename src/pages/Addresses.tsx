@@ -6,9 +6,11 @@ import axiosInstance from '../api/axiosInstance';
 import { Address, UpdateAddressResponse, UpdateAddressPayload, AddressResponse, CreateAddressPayload, CreateAddressResponse } from "../types/addresses";
 import { EditAddressDialog } from '../components/addresses/EditAddressDialog';
 import { CreateAddressDialog } from '../components/addresses/CreateAddressDialog';
+import { useTranslation } from 'react-i18next';
 
 function Addresses() {
     const { user, logout } = useAuth();
+    const { t } = useTranslation(undefined, { keyPrefix: "addresses" });
 
     const [loading, setLoading] = useState(true);
     const [addresses, setAddresses] = useState<Address[]>([]);
@@ -105,7 +107,7 @@ function Addresses() {
             </div>
             <div className='p-4'>
                 <div className='font-bold text-2xl'>
-                    Addresses
+                    {t("title")}
                 </div>
                 <ul className='divide-y divide-gray-100 mt-10 mb-5'>
                     {
@@ -130,7 +132,7 @@ function Addresses() {
                                         {
                                             address.floor ? (
                                                 <span className="block text-xs text-gray-500 group-has-checked:text-indigo-700">
-                                                    Floor: {address.floor}
+                                                    {t("floor", {floor: address.floor})}
                                                 </span>
                                             ) : null
                                         }
@@ -166,7 +168,7 @@ function Addresses() {
                     disabled={loading}
                     onClick={() => setOpenCreateAddress(true)}
                 >
-                    Create Address
+                   {t("create_address")}
                 </button>
             </div>
             <EditAddressDialog
@@ -184,12 +186,12 @@ function Addresses() {
             />
             <dialog id="address-delete-confirm" className="modal">
                 <div className="modal-box">
-                    <h3 className="text-lg font-bold">Delete address?</h3>
-                    <p className="py-4">This action cannot be undone</p>
+                    <h3 className="text-lg font-bold">{t("delete_title")}</h3>
+                    <p className="py-4">{t("delete_description")}</p>
                     <div className="modal-action">
                         <form method="dialog" className=' flex gap-2'>
-                            <button className="btn btn-sm">Close</button>
-                            <button className="btn btn-sm btn-error text-white" onClick={() => onDeleteAddress()}>Delete</button>
+                            <button className="btn btn-sm">{t("delete_close")}</button>
+                            <button className="btn btn-sm btn-error text-white" onClick={() => onDeleteAddress()}>{t("delete_action")}</button>
                         </form>
                     </div>
                 </div>

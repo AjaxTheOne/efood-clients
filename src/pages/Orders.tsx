@@ -5,9 +5,11 @@ import { Link } from 'react-router';
 import axiosInstance from '../api/axiosInstance';
 import { Order, OrderListResponse, OrderStatus } from '../types/orders';
 import dayjs from "dayjs";
+import { useTranslation } from 'react-i18next';
 
 function Orders() {
     const { user, logout } = useAuth();
+    const { t } = useTranslation(undefined, {keyPrefix: "orders"});
 
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState<Order[]>([]);
@@ -27,17 +29,18 @@ function Orders() {
     }, []);
 
     const renderStatus = (status: OrderStatus) => {
+        const text = t("status." + status);
         switch (status) {
             case "pending":
-                return <div className="badge badge-ghost">Pending</div>;
+                return <div className="badge badge-ghost">{text}</div>;
             case "processing":
-                return <div className="badge badge-info">Processing</div>;
+                return <div className="badge badge-info">{text}</div>;
             case "out_for_delivery":
-                return <div className="badge badge-neutral">Out for delivery</div>;
+                return <div className="badge badge-neutral">{text}</div>;
             case "completed":
-                return <div className="badge badge-success">Completed</div>;
+                return <div className="badge badge-success">{text}</div>;
             case "cancelled":
-                return <div className="badge badge-error">Cancelled</div>;
+                return <div className="badge badge-error">{text}</div>;
         }
     };
 
@@ -52,7 +55,7 @@ function Orders() {
             </div>
             <div className='p-4'>
                 <div className='font-bold text-2xl'>
-                    Orders
+                    {t("title")}
                 </div>
                 <ul className='divide-y divide-gray-100 mt-10'>
                     {
@@ -86,7 +89,14 @@ function Orders() {
                                             </div>
                                             <div className='flex items-center justify-between'>
                                                 <div className='text-gray-500 text-sm'>
-                                                    {dayjs(order.created_at).format("DD/MM/YYYY")} · {dayjs(order.created_at).format("HH:mm")} · ID: {order.id}
+                                                    {t(
+                                                        "details",
+                                                        {
+                                                            date: dayjs(order.created_at).format("DD/MM/YYYY"),
+                                                            time: dayjs(order.created_at).format("HH:mm"),
+                                                            id: order.id
+                                                        }
+                                                    )}
                                                 </div>
                                                 <div>
                                                     {renderStatus(order.status)}

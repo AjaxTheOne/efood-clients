@@ -2,12 +2,14 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeftIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 type Props = {
     open: boolean;
     setOpen: (value: boolean) => void;
 };
 
 export function ChangePasswordDialog({ open, setOpen }: Props) {
+        const { t } = useTranslation(undefined, { keyPrefix: "profile.change_password_dialog" });
     const {loading, error: authError, changePassword} = useAuth();
 
     const [currentPassword, setCurrentPassword] = useState("");
@@ -24,12 +26,12 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
         setError("");
 
         if (password !== confirmPassword) {
-            setError("Passwords do not match");
+            setError(t("password_match_error"));
             return;
         }
 
         if (password.length < 6) {
-            setError("Password is less than 6 characters");
+            setError(t("password_length_error", {count: 6}));
             return;
         }
 
@@ -59,7 +61,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                             </button>
                         </div>
                         <div className="p-4">
-                            <h1 className="font-bold text-2xl">Change password</h1>
+                            <h1 className="font-bold text-2xl">{t("title")}</h1>
                         </div>
                         <div className='p-4 flex flex-col gap-8'>
                             <label className="input input-lg w-full">
@@ -68,7 +70,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                                     value={currentPassword}
                                     onChange={ev => setCurrentPassword(ev.target.value)}
                                     name="current-password"
-                                    placeholder="Current password" 
+                                    placeholder={t("form.current_password_placeholder")}
                                     className="grow" 
                                 />
                                 <button className="btn btn-sm btn-circle" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
@@ -83,7 +85,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                                     value={password}
                                     onChange={ev => setPassword(ev.target.value)}
                                     name="password"
-                                    placeholder="Password" 
+                                    placeholder={t("form.password_placeholder")}
                                     className="grow" 
                                 />
                                 <button className="btn btn-sm btn-circle" onClick={() => setShowPassword(!showPassword)}>
@@ -98,7 +100,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                                     value={confirmPassword}
                                     onChange={ev => setConfirmPassword(ev.target.value)}
                                     name="confirm-password"
-                                    placeholder="Confirm password" 
+                                    placeholder={t("form.confirm_password_placeholder")}
                                     className="grow" 
                                 />
                                 <button className="btn btn-sm btn-circle" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
@@ -107,7 +109,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                                     }
                                 </button>
                             </label>
-                            <p>Your password should be at least 6 characters long.</p>
+                            <p>{t("password_length_warning", {count: 6})}</p>
 
                             {
                                 (error || authError) && 
@@ -121,7 +123,7 @@ export function ChangePasswordDialog({ open, setOpen }: Props) {
                                 {
                                     loading
                                         ? <span className="loading loading-spinner"></span>
-                                        : "Change password"
+                                        : t("change_password")
                                 }
                             </button>
                         </div>

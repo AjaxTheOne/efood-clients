@@ -1,5 +1,6 @@
 import { PaymentMethod } from "../../types/stores";
 import { ChevronRightIcon, CreditCardIcon, BanknotesIcon } from "@heroicons/react/24/solid";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     paymentMethod: PaymentMethod;
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export function StorePaymentMethod({ paymentMethod, onClick }: Props) {
+    const { t } = useTranslation(undefined, {keyPrefix: "payment_method"});
     return (
         <div className="w-full rounded-md border border-gray-300 bg-white">
             <a 
@@ -18,13 +20,13 @@ export function StorePaymentMethod({ paymentMethod, onClick }: Props) {
                     { paymentMethod === "card" &&
                         <>
                             <CreditCardIcon className="size-4"/>
-                            Card
+                            {t(paymentMethod)}
                         </>
                     }
                     { paymentMethod === "cod" &&
                         <>
                             <BanknotesIcon className="size-4"/>
-                            Cash
+                            {t(paymentMethod)}
                         </>
                     }
                 </div>

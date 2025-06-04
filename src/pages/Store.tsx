@@ -18,10 +18,12 @@ import { StoreShippingMethodDialog } from "../components/stores/StoreShippingMet
 import { StorePaymentMethodDialog } from "../components/stores/StorePaymentMethodDialog";
 import { OrderCreatePayload, OrderCreateResponse } from "../types/orders";
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from "react-i18next";
 
 function Store() {
     const params = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslation(undefined, { keyPrefix: 'store' });
 
     const cartProducts = useCartStore(state => state.selectStore(+params.id!)?.products);
     const paymentMethod = useCartStore(state => state.selectStore(+params.id!)?.paymentMethod);
@@ -234,9 +236,9 @@ function Store() {
                         </div>
                     </div>
                     <div className="mt-3 truncate text-xs/5 text-gray-500 flex items-center gap-1 justify-end">
-                        <span>Minimum {store?.minimum_cart_value}€</span>
+                        <span>{t("minimum_cart_value", {minimumCartValue: store?.minimum_cart_value})}</span>
                         <span>·</span>
-                        <span>Delivery {store?.shipping_price}€</span>
+                        <span>{t("delivery_fee", {fee: store?.shipping_price})}</span>
                     </div>
 
                     <div className="mt-4 pb-14">
@@ -282,7 +284,7 @@ function Store() {
                                     }
                                 </span>
                             </div>
-                            <div className="col-span-1 font-bold text-lg text-black text-center">Cart</div>
+                            <div className="col-span-1 font-bold text-lg text-black text-center">{t("cart.title")}</div>
                             <div className="col-span-1 font-bold text-black text-end">
                                 {
                                     cartProducts.reduce((total, product) => {

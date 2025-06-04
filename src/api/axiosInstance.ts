@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
     const address = localStorage.getItem("address");
+    const locale = localStorage.getItem("i18nextLng");
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -19,6 +20,8 @@ axiosInstance.interceptors.request.use((config) => {
         const addressJson = JSON.parse(address) as Address;
         config.headers["X-Location"] = `${addressJson.latitude},${addressJson.longitude}`;
     }
+
+    config.headers["Accept-Language"] = locale ?? "en";
 
     return config;
 });

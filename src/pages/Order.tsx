@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { socket } from "../api/sockets";
 import GoogleMap, { Map } from 'google-maps-react-markers';
 import MapMarker from '../components/profile/MapMarker';
+import { useTranslation } from 'react-i18next';
 
 type DriverLocation = {
     driver_id: number;
@@ -23,6 +24,8 @@ const containerStyle = {
 
 function Order() {
     const params = useParams();
+    const general = useTranslation();
+    const { t } = useTranslation(undefined, { keyPrefix: "order" });
     const { user, logout } = useAuth();
 
     const [loading, setLoading] = useState(true);
@@ -84,17 +87,18 @@ function Order() {
     };
 
     const renderStatus = () => {
+        const text = general.t("orders.status." + order?.status);
         switch (order?.status) {
             case "pending":
-                return <div className="badge badge-ghost">Pending</div>;
+                return <div className="badge badge-ghost">{text}</div>;
             case "processing":
-                return <div className="badge badge-info">Processing</div>;
+                return <div className="badge badge-info">{text}</div>;
             case "out_for_delivery":
-                return <div className="badge badge-neutral">Out for delivery</div>;
+                return <div className="badge badge-neutral">{text}</div>;
             case "completed":
-                return <div className="badge badge-success">Completed</div>;
+                return <div className="badge badge-success">{text}</div>;
             case "cancelled":
-                return <div className="badge badge-error">Cancelled</div>;
+                return <div className="badge badge-error">{text}</div>;
         }
     };
 
@@ -109,20 +113,27 @@ function Order() {
             </div>
             <div className='p-4'>
                 <div className='font-bold text-2xl'>
-                    Your Order
+                    {t("title")}
                 </div>
                 {
                     loading || !order ? (
-                        "Loading"
+                        t("loading")
                     ) : (
                         <div className='mt-5'>
                             <div className='flex items-center justify-between mb-5'>
                                 <div className='text-gray-500'>
-                                    {dayjs(order.created_at).format("DD/MM/YYYY")} · {dayjs(order.created_at).format("HH:mm")} · ID: {order.id}
+                                    {general.t(
+                                        "orders.details",
+                                        {
+                                            date: dayjs(order.created_at).format("DD/MM/YYYY"),
+                                            time: dayjs(order.created_at).format("HH:mm"),
+                                            id: order.id
+                                        }
+                                    )}
                                 </div>
                                 <div>{renderStatus()}</div>
                             </div>
-                            { 
+                            {
                                 order?.status === "out_for_delivery" &&
                                 <div
                                     style={containerStyle}
@@ -180,7 +191,7 @@ function Order() {
                                         </div>
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='font-bold text-sm'>Store:</div>
+                                        <div className='font-bold text-sm'>{t("store")}</div>
                                         <div>{order.store.name}</div>
                                     </div>
                                 </div>
@@ -189,8 +200,16 @@ function Order() {
                                         <MapPinIcon className='size-5' />
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='font-bold text-sm'>Deliver to:</div>
-                                        <div>{order.address.street} {order.address.number}, {order.address.city} {order.address.postal_code}</div>
+                                        <div className='font-bold text-sm'>{t("deliver_to")}</div>
+                                        <div>{t(
+                                            "deliver_to_address",
+                                            {
+                                                street: order.address.street,
+                                                number: order.address.number,
+                                                city: order.address.city,
+                                                postal_code: order.address.postal_code
+                                            }
+                                            )}</div>
                                     </div>
                                 </div>
                                 <div className='py-3 flex items-center gap-7'>
@@ -198,7 +217,7 @@ function Order() {
                                         <ShoppingCartIcon className='size-5' />
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='font-bold text-sm'>Total:</div>
+                                        <div className='font-bold text-sm'>{t("total")}</div>
                                         <div>{order.total_price}€</div>
                                     </div>
                                 </div>
@@ -208,16 +227,15 @@ function Order() {
                                         {order.payment_method === "cod" && <BanknotesIcon className="size-5" />}
                                     </div>
                                     <div className='flex flex-col'>
-                                        <div className='font-bold text-sm'>Payment type:</div>
+                                        <div className='font-bold text-sm'>{t("payment_type")}</div>
                                         <div>
-                                            {order.payment_method === "card" && "Card"}
-                                            {order.payment_method === "cod" && "Cash"}
+                                            {general.t("payment_method." + order.payment_method)}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className='font-bold text-xl px-5 mt-5'>
-                                Cart
+                                {t("cart")}
                             </div>
                             <ul className='divide-y divide-gray-100 px-5 mt-5'>
                                 {
@@ -241,7 +259,7 @@ function Order() {
                                         <BriefcaseIcon className='size-4' />
                                     </div>
                                     <div className='flex flex-col grow-1'>
-                                        Serivce fee
+                                        {t("service_fee")}
                                     </div>
                                     <div className='grow-0'>
                                         <div className='font-bold text-sm'>{order.shipping_price}€</div>
@@ -252,7 +270,7 @@ function Order() {
                                         <DocumentCurrencyEuroIcon className='size-4' />
                                     </div>
                                     <div className='flex flex-col grow-1'>
-                                        Total price
+                                        {t("total_price")}
                                     </div>
                                     <div className='grow-0'>
                                         <div className='font-bold text-sm'>{order.total_price}€</div>
