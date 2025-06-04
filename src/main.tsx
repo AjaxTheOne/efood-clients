@@ -16,6 +16,7 @@ import Orders from './pages/Orders.tsx';
 import Order from './pages/Order.tsx';
 import Profile from './pages/Profile.tsx';
 import Addresses from './pages/Addresses.tsx';
+import PushNotificationsProvider from './providers/push-notifications-provider.tsx';
 import {
   QueryClient,
   QueryClientProvider,
@@ -27,6 +28,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
 		<QueryClientProvider client={queryClient}>
+			<PushNotificationsProvider>
 			<AuthProvider>
 				<Routes>
 					<Route element={<MainLayout />}>
@@ -71,6 +73,7 @@ createRoot(document.getElementById('root')!).render(
 					</Route>
 				</Routes>
 			</AuthProvider>
+		</PushNotificationsProvider>
 		</QueryClientProvider>
 	</BrowserRouter>
 )
