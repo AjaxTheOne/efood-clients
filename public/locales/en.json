@@ -1,0 +1,163 @@
+{
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "payment_method": {
+    "card": "Card",
+    "cod": "Cash"
+  },
+  "shipping_method": {
+    "delivery": "Delivery",
+    "takeaway": "Take away",
+    "delivery_estimation": "Delivery {{estimation}}",
+    "takeaway_estimation": "Take away {{estimation}}"
+  },
+  "account": {
+    "hello": "Hello, {{username}}",
+    "profile": "Account",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "sign_out": "Sign out",
+    "locales": {
+      "header": "Languages"
+    }
+  },
+  "header": {
+    "addresses": {
+      "change_address": "Change address",
+      "no_address_selected": "No address selected",
+      "list": {
+        "title": "Addresses",
+        "new_address": "New address",
+        "no_addresses": "No addresses..."
+      },
+      "add_new": {
+        "title": "New address",
+        "close": "Close",
+        "create_address": "Save address",
+        "change_address": "Change address",
+        "edit_address": "Edit address",
+        "new_address": "New address",
+        "form": {
+          "street_address": "Street",
+          "number": "Number",
+          "city": "City",
+          "postal": "Postal code",
+          "phone": "Phone",
+          "floor": "Floor",
+          "door": "Doorbell"
+        }
+      }
+    }
+  },
+  "stores": {
+    "title": "{{numberOfStores}} stores",
+    "list": {
+      "products_in_cart_one": "{{count}} product in cart",
+      "products_in_cart_other": "{{count}} products in cart",
+      "delivery_fee": "Delivery fee {{fee}}€",
+      "no_stores_filters": "No available stores, please adjust your search filters"
+    }
+  },
+  "store": {
+    "minimum_cart_value": "Minimum order {{minimumCartValue}}€",
+    "delivery_fee": "Delivery fee {{fee}}€",
+    "cart": {
+      "title": "Cart"
+    },
+    "product": {
+      "price_from": "From {{price}}€",
+      "dialog": {
+        "notes": "Notes",
+        "preferences_placeholder": "Tell us your preferences...",
+        "add_to_cart": "Add to cart"
+      }
+    },
+    "information": {
+      "address": "Address",
+      "working_hours": "Working hours"
+    },
+    "summary": {
+      "title": "Cart",
+      "coupon_placeholder": "Coupon",
+      "cart_total": "Cart total",
+      "send_order": "Place order",
+      "add_more": "Add more products"
+    },
+    "shipping_method": {
+      "title": "Shipping method",
+      "description": "Please choose your preferred delivery method"
+    },
+    "payment_method": {
+      "title": "Payment method",
+      "description": "Please choose your preferred payment method"
+    }
+  },
+  "orders": {
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "out_for_delivery": "Out for delivery",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "title": "Orders",
+    "details": "{{date}} · {{time}} · ID: {{id}}"
+  },
+  "order": {
+    "title": "Your order",
+    "loading": "Loading...",
+    "store": "Store",
+    "deliver_to": "Deliver to",
+    "deliver_to_address": "{{street}} {{number}}, {{city}} {{postal_code}}",
+    "total": "Total",
+    "payment_type": "Payment method",
+    "cart": "Cart",
+    "service_fee": "Delivery fee",
+    "total_price": "Total price"
+  },
+  "profile": {
+    "title": "Profile",
+    "form": {
+      "email": "Email",
+      "email_placeholder": "Email",
+      "name": "Name",
+      "name_placeholder": "Name",
+      "phone": "Phone",
+      "phone_placeholder": "Phone",
+      "save_changes": "Save changes"
+    },
+    "change_password": "Change password",
+    "log_out": "Sign out",
+    "change_password_dialog": {
+      "password_match_error": "Passwords do not match",
+      "password_length_error": "Password is less than {{count}} characters",
+      "title": "Change password",
+      "form": {
+        "current_password_placeholder": "Current password",
+        "password_placeholder": "New password",
+        "confirm_password_placeholder": "Confirm password"
+      },
+      "password_length_warning": "Your password must be longer than {{count}} characters",
+      "change_password": "Change password"
+    }
+  },
+  "addresses": {
+    "title": "Addresses",
+    "floor": "Floor {{floor}}",
+    "create_address": "Create address",
+    "delete_title": "Delete address?",
+    "delete_description": "This action is irreversible",
+    "delete_close": "Cancel",
+    "delete_action": "Delete",
+    "edit": {
+      "title": "Update address"
+    }
+  }
+}

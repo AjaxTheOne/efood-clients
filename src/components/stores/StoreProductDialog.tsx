@@ -47,7 +47,7 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                 <div className="flex min-h-full h-full items-end justify-center text-center sm:items-center sm:p-0">
                     <DialogPanel
                         transition
-                        className="relative bg-gray-50 min-h-full h-full w-full transform text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+                        className="relative bg-base-100 min-h-full h-full w-full transform text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                     >
                         <div
                             className="hero relative h-[300px]"
@@ -64,7 +64,7 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                                 </button>
                             </div>
                         </div>
-                        <div className="bg-white rounded-b-2xl p-4 shadow-lg">
+                        <div className="bg-content-300 rounded-b-2xl p-4 shadow-lg">
                             <h2 className="font-bold text-lg mb-2">{selectedProduct?.name}</h2>
                             <p className="text-gray-500 text-xs mb-5">{selectedProduct?.description}</p>
                             <div className="font-bold text-lg">{selectedProduct?.price.toFixed(2)}€</div>
@@ -75,12 +75,12 @@ export function StoreProductDialog({ open, store, selectedProduct, productQuanti
                                 <textarea 
                                     value={note}
                                     onChange={(ev) => { setNote(ev.target.value) }}
-                                    className="textarea h-24 bg-white w-full" 
+                                    className="textarea h-24 w-full" 
                                     placeholder={t("preferences_placeholder")}>
                                 </textarea>
                             </fieldset>
                         </div>
-                        <div className="bg-white p-4 shadow-lg flex justify-between gap-10">
+                        <div className="bg-content-300 p-4 shadow-lg flex justify-between gap-10">
                             <ProductQuantityControls
                                 quantity={productQuantity}
                                 onDecreaseQuantity={onDecreaseQuantity}

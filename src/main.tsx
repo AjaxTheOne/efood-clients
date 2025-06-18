@@ -22,58 +22,99 @@ import {
 	QueryClientProvider,
 } from '@tanstack/react-query';
 import './i18n';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from '@mui/material';
+
 
 const queryClient = new QueryClient();
+
+const theme = createTheme({
+	colorSchemes: {
+		light: {
+			palette: {
+				primary: {
+					main: '#ef000d',
+				},
+				secondary: {
+					main: '#00b283',
+					contrastText: 'rgba(0,0,0,0.87)',
+				},
+			},
+		},
+		dark: {
+			palette: {
+				primary: {
+					main: '#ef000d',
+				},
+				secondary: {
+					main: '#00b283',
+					contrastText: 'rgba(0,0,0,0.87)',
+				},
+				background: {
+					paper: "#2b2b2b",
+				}
+			},
+		},
+	},
+	shape: {
+		borderRadius: 8,
+	},
+});
 
 createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
 		<QueryClientProvider client={queryClient}>
-			<PushNotificationsProvider>
-				<AuthProvider>
-					<Routes>
-						<Route element={<MainLayout />}>
-							<Route path='/' element={
-								<NoAuthRoute><Home /></NoAuthRoute>
-							}></Route>
+			<ThemeProvider theme={theme} defaultMode='light'>
+				<PushNotificationsProvider>
+					<AuthProvider>
+						<Routes>
+							<Route element={<MainLayout />}>
+								<Route path='/' element={
+									<NoAuthRoute><Home /></NoAuthRoute>
+								}></Route>
 
-							<Route path='/login' element={
-								<NoAuthRoute><Login /></NoAuthRoute>
-							} />
+								<Route path='/login' element={
+									<NoAuthRoute><Login /></NoAuthRoute>
+								} />
 
-							<Route path='/register' element={
-								<NoAuthRoute><Register /></NoAuthRoute>
-							} />
+								<Route path='/register' element={
+									<NoAuthRoute><Register /></NoAuthRoute>
+								} />
 
-							<Route path='/stores' element={
-								<AuthRoute><Stores /></AuthRoute>
-							} />
-							<Route path='/stores/:id' element={
-								<AuthRoute><Store /></AuthRoute>
-							} />
-							<Route path='/stores/:id/checkout' element={
-								<AuthRoute><Checkout /></AuthRoute>
-							} />
+								<Route path='/stores' element={
+									<AuthRoute><Stores /></AuthRoute>
+								} />
+								<Route path='/stores/:id' element={
+									<AuthRoute><Store /></AuthRoute>
+								} />
+								<Route path='/stores/:id/checkout' element={
+									<AuthRoute><Checkout /></AuthRoute>
+								} />
 
-							<Route path='/account' element={
-								<AuthRoute><Account /></AuthRoute>
-							} />
-							<Route path='/profile' element={
-								<AuthRoute><Profile /></AuthRoute>
-							} />
-							<Route path='/addresses' element={
-								<AuthRoute><Addresses /></AuthRoute>
-							} />
+								<Route path='/account' element={
+									<AuthRoute><Account /></AuthRoute>
+								} />
+								<Route path='/profile' element={
+									<AuthRoute><Profile /></AuthRoute>
+								} />
+								<Route path='/addresses' element={
+									<AuthRoute><Addresses /></AuthRoute>
+								} />
 
-							<Route path='/orders' element={
-								<AuthRoute><Orders /></AuthRoute>
-							} />
-							<Route path='/orders/:id' element={
-								<AuthRoute><Order /></AuthRoute>
-							} />
-						</Route>
-					</Routes>
-				</AuthProvider>
-			</PushNotificationsProvider>
+								<Route path='/orders' element={
+									<AuthRoute><Orders /></AuthRoute>
+								} />
+								<Route path='/orders/:id' element={
+									<AuthRoute><Order /></AuthRoute>
+								} />
+							</Route>
+						</Routes>
+					</AuthProvider>
+				</PushNotificationsProvider>
+			</ThemeProvider>
 		</QueryClientProvider>
 	</BrowserRouter>
 )

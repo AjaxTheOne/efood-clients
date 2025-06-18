@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { Store } from "../../types/stores";
 import { useCartStore } from "../../context/CartStore";
 import { useTranslation } from "react-i18next";
+import { Avatar, Box, Card, CardMedia, Paper, Typography } from "@mui/material";
 
 type Props = {
     layout: "list" | "grid";
@@ -10,82 +11,76 @@ type Props = {
 };
 
 function StoresList({ layout, stores, isFetched }: Props) {
-    const { t } = useTranslation(undefined, {keyPrefix: "stores.list"});
+    const { t } = useTranslation(undefined, { keyPrefix: "stores.list" });
     const cartStores = useCartStore(state => state.stores);
 
     const activeCart = (store: Store, size: string = "badge-sm") => {
-        console.log(cartStores);
         return cartStores?.[store.id]?.products?.length ? (
             <div className="mb-3">
                 <div className={"badge badge-error text-white " + size}>
                     {
                         t("products_in_cart", {
                             count: cartStores?.[store.id]?.products.reduce((total, product) => {
-                            return total + product.quantity;
-                        }, 0)})
+                                return total + product.quantity;
+                            }, 0)
+                        })
                     }
                 </div>
             </div>
         ) : (
             null
         );
-    }
-        
-    
+    };
+
 
     const gridStore = (store: Store) => (
         <Link to={"/stores/" + store.id} key={store.id}>
-            <div className="card bg-base-100 w-full shadow-sm">
-                <figure className="relative">
-                    <img
-                        src={store.cover}
+            <Card elevation={1}>
+                <Box className="relative">
+                    <CardMedia
+                        component="img"
+                        height="194"
+                        image={store.cover}
+                        alt="Paella dish"
                     />
-                    {
-                        store.logo &&
-                        <div
-                            className="avatar absolute"
-                            style={{ left: "15px", bottom: "15px" }}
-                        >
-                            <div className="w-[40px] ring-gray-300 ring-offset-base-100 rounded-full ring ring-offset-2">
-                                <img src={store.logo} />
-                            </div>
-                        </div>
-                    }
-                    
-                        
-                        <div
-                            className="absolute"
-                            style={{ right: "10px", bottom: "0" }}
+                        {
+                            !!store.logo && (
+                                <Box
+                                    className="avatar absolute left-[15px] bottom-[15px]"
+                                >
+                                    <Avatar alt="Remy Sharp" src={store.logo} />
+                                </Box>
+                            )
+                        }
+                        <Box
+                            className="absolute bottom-[15px] right-[10px]"
                         >
                             {activeCart(store)}
                             {
-                                store.shipping_price && 
-                                <div className="px-1.5 bg-white rounded-t-lg text-center">
-                                    <span className="text-xs">
-                                        {t("delivery_fee", {fee: store.shipping_price})}
-                                    </span>
-                                </div>
+                                store.shipping_price &&
+                                <Paper elevation={1} className="px-1.5 rounded-t-lg rounded-b-none text-center">
+                                    <Typography>
+                                        {t("delivery_fee", { fee: store.shipping_price })}
+                                    </Typography>
+                                </Paper>
                             }
-                        </div>
-                    
-                </figure>
-                <div className="card-body p-3">
-                    <h2 className="card-title">
-                        {store.name}
-                    </h2>
+                        </Box>
+                </Box>
+                <div className="p-3">
+                    <Typography component={"h2"}>{store.name}</Typography>
                     <div className="flex items-center gap-1">
                         {
                             store.categories?.[0] ? (
                                 <>
-                                    <b>{store.categories[0].name}</b>
+                                    <Typography component={"b"}>{store.categories[0].name}</Typography>
                                     <span>·</span>
                                 </>
                             ) : null
                         }
-                        <span>{store.minimum_cart_value}€</span>
+                        <Typography component={"span"}>{store.minimum_cart_value}€</Typography>
                     </div>
                 </div>
-            </div>
+            </Card>
         </Link>
     );
 
@@ -108,7 +103,7 @@ function StoresList({ layout, stores, isFetched }: Props) {
                                 }
                                 <span>{store.minimum_cart_value}€</span>
                                 <span>·</span>
-                                { !!store.shipping_price && <span>{t("delivery_fee", {fee: store.shipping_price})}</span>}
+                                {!!store.shipping_price && <span>{t("delivery_fee", { fee: store.shipping_price })}</span>}
                             </div>
                             {activeCart(store, 'badge-xs')}
                         </div>

@@ -1,4 +1,5 @@
 import { ListBulletIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 type Props = {
     layout: "list" | "grid";
@@ -7,25 +8,20 @@ type Props = {
 
 function StoresLayoutToggle({ layout, onLayoutChange }: Props) {
 
-    const changeLayout = (layout: "list" | "grid") => {
+    const changeLayout = (event, layout: "list" | "grid") => {
         onLayoutChange(layout);
     }
 
     return (
-        <div className="p-[2px] rounded-xs bg-gray-200 flex inline-flex gap-1">
-            <button 
-                onClick={() => changeLayout("list")}
-                className={`btn btn-square size-8 hover:bg-white ${layout !== 'list' ? 'bg-transparent' : ''}`}
-            >
-                <ListBulletIcon className="size-6"/>
-            </button>
-            <button 
-                onClick={() => changeLayout("grid")}
-                className={`btn btn-square size-8 hover:bg-white  ${layout !== 'grid' ? 'bg-transparent' : ''}`}
-            >
-                <Squares2X2Icon className="size-6"/>
-            </button>
-        </div>
+        <ToggleButtonGroup
+            size="small"
+            value={layout}
+            exclusive
+            onChange={changeLayout}
+        >
+            <ToggleButton value="list"><ListBulletIcon className="size-6"/></ToggleButton>
+            <ToggleButton value="grid"><Squares2X2Icon className="size-6"/></ToggleButton>
+        </ToggleButtonGroup>
     );
 }
 

@@ -79,7 +79,7 @@ export function StoreProduct({ store, product, onSelectProduct }: Props) {
                                         setShowQuantity(false);
                                     }}
                                 >
-                                    <XMarkIcon className="size-4 text-gray-500"/>
+                                    <XMarkIcon className="size-4 text-content-100"/>
                                 </button>
                                 <button 
                                     className="btn btn-square size-8"
@@ -89,9 +89,9 @@ export function StoreProduct({ store, product, onSelectProduct }: Props) {
                                         setShowQuantity(false);
                                     }}
                                 >
-                                    <TrashIcon className="size-4 text-gray-500"/>
+                                    <TrashIcon className="size-4 text-content-100"/>
                                 </button>
-                                <div className="p-1 bg-white border border-gray-200 rounded">
+                                <div className="p-1 bg-base-300 border border-base-300 rounded">
                                     <ProductQuantityControls
                                         quantity={productQuantity}
                                         onIncreaseQuantity={(event) => {

@@ -16,7 +16,7 @@ function MainLayout() {
             "/addresses"
         ].some(path => location.pathname.includes(path));
         
-        setShowHeader(!hideHeader);
+        // setShowHeader(!hideHeader);
     }, [location]);
 
     return (

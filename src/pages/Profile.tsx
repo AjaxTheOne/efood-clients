@@ -1,16 +1,17 @@
 
 import { useAuth } from '../context/AuthContext';
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon, InboxIcon } from "@heroicons/react/24/solid";
 import { useState } from 'react';
 import { Link } from 'react-router';
 import axiosInstance from '../api/axiosInstance';
 import { ChangePasswordDialog } from '../components/profile/ChangePasswordDialog';
 import { useTranslation } from 'react-i18next';
+import { Button, Container, Box, Stack, IconButton, Typography, Grid, TextField, List, ListItem, ListItemButton, ListItemText, Divider } from '@mui/material';
 
 function Profile() {
     const { user, loading, error, update, logout } = useAuth();
     const { t } = useTranslation(undefined, { keyPrefix: "profile" });
-        
+
 
     const [name, setName] = useState(user!.name);
     const [phone, setPhone] = useState(user!.phone || "");
@@ -22,90 +23,115 @@ function Profile() {
     };
 
     return (
-        <div>
-            <div className='my-4 px-2'>
+        <Container>
+            <Box sx={{ my: 4, px: 2 }}>
                 <Link to={"/account"}>
-                    <button className="btn btn-circle btn-ghost">
+                    <IconButton>
                         <ChevronLeftIcon className="size-8" />
-                    </button>
+                    </IconButton>
                 </Link>
-            </div>
-            <div className='p-4'>
-                <div className='font-bold text-2xl mb-10'>
+            </Box>
+            <Box sx={{ p: 4 }}>
+                <Typography variant='h5' component="h1" sx={{ mb: 4 }}>
                     {t("title")}
-                </div>
-                <div className='flex flex-col gap-8'>
-                    <label className="floating-label">
-                        <input type="email" disabled value={user!.email} placeholder={t("form.email_placeholder")} className="input input-lg w-full" />
-                        <span>{t("form.email")}</span>
-                    </label>
-                    <label className="floating-label">
-                        <input 
-                            type="text"
+                </Typography>
+                <Grid container spacing={2}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                        <TextField
+                            required
+                            disabled
+                            fullWidth
+                            value={user!.email}
+                            type='email'
+                            id="profile-email"
+                            label={t("form.email")}
+                            variant="filled"
+                            placeholder={t("form.email_placeholder")}
+                        />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                        <TextField
+                            fullWidth
                             value={name}
+                            type='text'
+                            id="profile-name"
+                            label={t("form.name")}
+                            variant="filled"
                             onChange={ev => setName(ev.target.value)}
-                            name="name"
                             placeholder={t("form.name_placeholder")}
-                            className="input input-lg w-full" 
                         />
-                        <span>{t("form.name")}</span>
-                    </label>
-                    <label className="floating-label">
-                        <input 
-                            type="text"
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                        <TextField
+                            fullWidth
                             value={phone}
+                            type='text'
+                            id="profile-phone"
+                            label={t("form.phone")}
+                            variant="filled"
                             onChange={ev => setPhone(ev.target.value)}
-                            name="phone"
                             placeholder={t("form.phone_placeholder")}
-                            className="input input-lg w-full" 
                         />
-                        <span>{t("form.phone")}</span>
-                    </label>
-                    {
-                        error && 
-                        <div className='text-error text-center'>{error}</div>
-                    }
-                    <button 
-                        className='btn btn-success btn-lg'
-                        disabled={loading || !name}
-                        onClick={() => onSaveChanges()}
+                    </Grid>
+
+                    <Grid size={12}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: { xs: "column", sm: "row" },
+                            justifyContent: "end",
+                            alignItems: "center",
+                            gap: 2
+                        }}
                     >
                         {
-                            loading
-                                ? <span className="loading loading-spinner"></span>
-                                : t("form.save_changes")
+                            error &&
+                            <Box sx={{ color: "error.main", textAlign: "center" }}>{error}</Box>
                         }
-                    </button>
-                </div>
-            </div>
-            <div className='mt-4 px-4'>
-                <a 
-                    href="javascript:void(0)" 
-                    className="py-4 block border-b border-gray-200"
-                    onClick={() => setOpenChangePassword(true) }
-                >
-                    <div className='flex justify-between items-center'>
-                        {t("change_password")}
-                        <ChevronRightIcon className='size-5 text-gray-500'/>
-                    </div>
-                </a>
-                <a 
-                    href="javascript:void(0)" 
-                    className="py-4 block text-error"
-                    onClick={() => logout() }
-                >
-                    <div className='flex justify-between items-center'>
-                        {t("log_out")}
-                        <ChevronRightIcon className='size-5 text-gray-500'/>
-                    </div>
-                </a>
-            </div>
+                        <Button
+                            disabled={loading || !name}
+                            onClick={() => onSaveChanges()}
+                            size="large"
+                            variant="contained"
+                            color="secondary"
+                            loading={loading}
+                            sx={{ width: { xs: 1, sm: 'auto' } }}
+                        >
+                            {t("form.save_changes")}
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Stack sx={{ mt: 4, px: 4 }}>
+                <List>
+                    <ListItem
+                        disablePadding
+                        secondaryAction={
+                            <ChevronRightIcon className='size-5' />
+                        }
+                    >
+                        <ListItemButton onClick={() => setOpenChangePassword(true)}>
+                            <ListItemText primary={t("change_password")} />
+                        </ListItemButton>
+                    </ListItem>
+                    <Divider/>
+                    <ListItem 
+                        disablePadding
+                        secondaryAction={
+                            <ChevronRightIcon className='size-5' />
+                        }
+                    >
+                        <ListItemButton onClick={() => logout()}>
+                            <ListItemText slotProps={{primary: {color: "error.main"}}} primary={t("log_out")}/>
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+            </Stack>
 
             <ChangePasswordDialog
                 open={openChangePassword}
                 setOpen={setOpenChangePassword}
             />
-        </div>
+        </Container>
     );
 }
 

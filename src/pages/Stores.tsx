@@ -8,6 +8,7 @@ import { Store, StoresResponse } from "../types/stores";
 import StoresLayoutToggle from "../components/stores/StoresLayoutToggle";
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from "react-i18next";
+import { Box, Container, Grid, Skeleton, Typography } from "@mui/material";
 
 function Stores() {
     const { t } = useTranslation(undefined, { keyPrefix: 'stores' });
@@ -34,7 +35,7 @@ function Stores() {
     };
 
     const onSelectCategory = (categoryId: number) => {
-            // @ts-ignore
+        // @ts-ignore
         setSearchParams(params => {
             let categories = params.getAll("categories[]").map(Number);
             if (categories.includes(categoryId)) {
@@ -49,35 +50,41 @@ function Stores() {
     };
 
     return (
-        <main className="p-6 bg-gray-50">
-            <div>
-                <CategoriesList 
-                    categories={categories?.data || []} 
-                    selectedCategories={searchParams.getAll("categories[]").map(Number)}
-                    onSelectCategory={onSelectCategory} 
-                />
-            </div>
-            <div className="mt-4">
-                <div className="grid grid-cols-2 items-center mb-4">
-                    <div>
-                        {
-                            stores.isFetched ? (
-                                <h2 className="font-bold text-lg">{t("title", {numberOfStores: stores.data!.length})}</h2>
-                            ) : (
-                                <div className="skeleton h-[28px] w-[160px]"></div> 
-                            )
-                        }
-                    </div>
-                    <div className="text-end">
-                        <StoresLayoutToggle 
-                            layout={layout}
-                            onLayoutChange={onLayoutChange}
-                        />
-                    </div>
-                </div>
-                <StoresList stores={stores?.data || []} isFetched={stores.isFetched} layout={layout} />
-            </div>
-        </main>
+        <Container
+            disableGutters
+            sx={{ bgcolor: 'background.default' }}
+            maxWidth={false}
+        >
+            <Container>
+                <Box>
+                    <CategoriesList
+                        categories={categories?.data || []}
+                        selectedCategories={searchParams.getAll("categories[]").map(Number)}
+                        onSelectCategory={onSelectCategory}
+                    />
+                </Box>
+                <Box sx={{ mt: 4 }}>
+                    <Grid container alignItems={"center"} sx={{ mb: 4 }}>
+                        <Grid size={6}>
+                            {
+                                stores.isFetched ? (
+                                    <Typography>{t("title", { numberOfStores: stores.data!.length })}</Typography>
+                                ) : (
+                                    <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={160} />
+                                )
+                            }
+                        </Grid>
+                        <Grid size={6} sx={{ display: "flex" }} justifyContent="end">
+                            <StoresLayoutToggle
+                                layout={layout}
+                                onLayoutChange={onLayoutChange}
+                            />
+                        </Grid>
+                    </Grid>
+                    <StoresList stores={stores?.data || []} isFetched={stores.isFetched} layout={layout} />
+                </Box>
+            </Container>
+        </Container>
     );
 }
 

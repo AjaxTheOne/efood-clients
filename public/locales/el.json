@@ -1,0 +1,163 @@
+{
+    "days": {
+        "monday": "Δευτέρα",
+        "tuesday": "Τρίτη",
+        "wednesday": "Τετάρτη",
+        "thursday": "Πέμπτη",
+        "friday": "Παρασκευή",
+        "saturday": "Σάββατο",
+        "sunday": "Κυριακή"
+    },
+    "payment_method": {
+        "card": "Κάρτα",
+        "cod": "Μετρητά"
+    },
+    "shipping_method": {
+        "delivery": "Delivery",
+        "takeaway": "Take away",
+        "delivery_estimation": "Delivery {{estimation}}",
+        "takeaway_estimation": "Take away {{estimation}}"
+    },
+    "account": {
+        "hello": "Γεια σου, {{username}}",
+        "profile": "Λογαριασμός",
+        "orders": "Παραγγελίες",
+        "addresses": "Διευθύνσεις",
+        "sign_out": "Αποσύνδεση",
+        "locales": {
+            "header": "Γλώσσες"
+        }
+    },
+    "header": {
+        "addresses": {
+            "change_address": "Αλλαγή διεύθυνσης",
+            "no_address_selected": "Καμία επιλεγμένη διεύθυνση",
+            "list": {
+                "title": "Διευθύνσεις",
+                "new_address": "Νέα διεύθυνση",
+                "no_addresses": "Καμία διεύθυνση..."
+            },
+            "add_new": {
+                "title": "Νέα διεύθυνση",
+                "close": "Κλείσιμο",
+                "create_address": "Αποθήκευση διεύθυνσης",
+                "change_address": "Αλλαγή διεύθυνσης",
+                "edit_address": "Επεξεργασία διεύθυνσης",
+                "new_address": "Νέα διεύθυνση",
+                "form": {
+                    "street_address": "Οδός",
+                    "number": "Αριθμός",
+                    "city": "Πόλη",
+                    "postal": "Τ.Κ.",
+                    "phone": "Τηλέφωνο",
+                    "floor": "Όροφος",
+                    "door": "Κουδούνι"
+                }
+            }
+        }
+    },
+    "stores": {
+        "title": "{{numberOfStores}} καταστήματα",
+        "list": {
+            "products_in_cart_one": "{{count}} προϊόν στο καλάθι",
+            "products_in_cart_other": "{{count}} προϊόντα στο καλάθι",
+            "delivery_fee": "Αξία διανομής {{fee}}€",
+            "no_stores_filters": "Δεν υπάρχουν διαθέσιμα καταστήματα, παρακαλούμε αλλάξτε τα φίλτρα αναζήτησης"
+        }
+    },
+    "store": {
+        "minimum_cart_value": "Ελάχιστη παραγγελία {{minimumCartValue}}€",
+        "delivery_fee": "Αξία διανομής {{fee}}€",
+        "cart": {
+            "title": "Καλάθι"
+        },
+        "product": {
+            "price_from": "Από {{price}}€",
+            "dialog": {
+                "notes": "Σημειώσεις",
+                "preferences_placeholder": "Γράψτε μας τις προτιμήσεις σας...",
+                "add_to_cart": "Προσθήκη στο καλάθι"
+            }
+        },
+        "information": {
+            "address": "Διεύθυνση",
+            "working_hours": "Ώρες λειτουργίας"
+        },
+        "summary": {
+            "title": "Καλάθι",
+            "coupon_placeholder": "Κουπόνι",
+            "cart_total": "Σύνολο καλαθιού",
+            "send_order": "Αποστολή παραγγελίας",
+            "add_more": "Προσθήκη προϊόντων"
+        },
+        "shipping_method": {
+            "title": "Τρόπος διανομής",
+            "description": "Παρακαλούμε διαλέξτε τον τρόπο παραλαβής της παραγγελίας σας"
+        },
+        "payment_method": {
+            "title": "Τρόπος πληρωμής",
+            "description": "Παρακαλούμε διαλέξτε τον τρόπο πληρωμής της παραγγελίας σας"
+        }
+    },
+    "orders": {
+        "status": {
+            "pending": "Εκκρεμεί",
+            "processing": "Ετοιμάζεται",
+            "out_for_delivery": "Προς μεταφορά",
+            "completed": "Ολοκληρώθηκε",
+            "cancelled": "Ακυρώθηκε"
+        },
+        "title": "Παραγγελίες",
+        "details": "{{date}} · {{time}} · ID: {{id}}"
+    },
+    "order": {
+        "title": "Η παραγγελία σας",
+        "loading": "Φορτώνει...",
+        "store": "Κατάστημα",
+        "deliver_to": "Αποστολή σε",
+        "deliver_to_address": "{{street}} {{number}}, {{city}} {{postal_code}}",
+        "total": "Σύνολο",
+        "payment_type": "Τρόπος πληρωμής",
+        "cart": "Καλάθι",
+        "service_fee": "Αξία διανομής",
+        "total_price": "Συνολική τιμή"
+    },
+    "profile": {
+        "title": "Προφίλ",
+        "form": {
+            "email": "Email",
+            "email_placeholder": "Email",
+            "name": "Όνομα",
+            "name_placeholder": "Όνομα",
+            "phone": "Τηλέφωνο",
+            "phone_placeholder": "Τηλέφωνο",
+            "save_changes": "Αποθήκευση αλλαγών"
+        },
+        "change_password": "Αλλαγή κωδικού",
+        "log_out": "Αποσύνδεση",
+        "change_password_dialog": {
+            "password_match_error": "Οι κωδικοί δεν ταιριάζουν",
+            "password_length_error": "Ο κωδικός είναι κάτω από {{count}} χαρακτήρες",
+            "title": "Αλλαγή κωδικού",
+            "form": {
+                "current_password_placeholder": "Τωρινός κωδικός",
+                "password_placeholder": "Νέος κωδικός",
+                "confirm_password_placeholder": "Επαλήθευση κωδικού"
+            },
+            "password_length_warning": "Ο κωδικός σας πρέπει να είναι πάνω από {{count}} χαρακτήρες",
+            "change_password": "Αλλαγή κωδικού"
+        }
+    },
+    "addresses": {
+        "title": "Διευθύνσεις",
+        "floor": "Όροφος {{floor}}",
+        "create_address": "Δημιουργία διεύθυνσης",
+        "delete_title": "Διαγραφή διεύθυνσης;",
+        "delete_description": "Η ενέργεια είναι μη αναστρέψιμη",
+        "delete_close": "Άκυρο",
+        "delete_action": "Διαγραφή",
+        "edit": {
+            "title": "Ενημέρωση διεύθυνσης"
+        }
+    }
+}
